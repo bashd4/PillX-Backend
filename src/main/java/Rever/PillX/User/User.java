@@ -22,6 +22,8 @@ public class User {
     public String medicalHistory; //Not sure what type this should be, string for now
     public List<String> allergies = new ArrayList<>(); //Not sure what type this should be, string for now
 
+    public User() {}
+
     public User(String name) {
         this.fullName = name;
     }
