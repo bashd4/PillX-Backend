@@ -12,10 +12,11 @@ public class UserController {
     UserRepository userRepository;
 
     @RequestMapping(value = "/add-user")
-    public void addUser(@RequestParam String fullName) {
+    public String addUser(@RequestParam String fullName) {
         User newUser = new User(fullName);
 
         userRepository.save(newUser);
+        return String.format("Saved %s", fullName);
     }
 
     @RequestMapping(value = "/get-user")
