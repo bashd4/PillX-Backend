@@ -20,6 +20,6 @@ public class UserController {
 
     @RequestMapping(value = "/get-user")
     public User getUser(@RequestParam String fullName) {
-        return userRepository.findByName(fullName);
+        return userRepository.findByFullName(fullName);
     }
 }
