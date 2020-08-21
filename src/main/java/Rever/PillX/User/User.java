@@ -10,21 +10,20 @@ import java.util.List;
 public class User {
 
     public enum Gender {
-        MALE, FEMALE, OTHER
+        MALE, FEMALE, OTHER, UNKNOWN
     }
     @Id
     public String fullName;
 
     public LocalDate dateOfBirth;
-    public Gender gender;
+    public Gender gender = Gender.UNKNOWN;
     public String phoneNumber;
     public String address;
     public String medicalHistory; //Not sure what type this should be, string for now
-    public List<String> allergies; //Not sure what type this should be, string for now
+    public List<String> allergies = new ArrayList<>(); //Not sure what type this should be, string for now
 
     public User(String name) {
         this.fullName = name;
-        this.allergies = new ArrayList<>();
     }
 }
 
