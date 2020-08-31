@@ -19,7 +19,7 @@ public class MedicineController {
                               @RequestParam(required=false) String dosageDescription, @RequestParam(required=false)Medicine.AdministrationMethods method,
                               @RequestParam(required=false) String sideEffects, @RequestParam(required=false) Dosage recommendedDosage,
                               @RequestParam(required=false) List<String> ingredients, @RequestParam(required=false) List<String> drugInteractions,
-                              @RequestParam(required=false) int medicationCycle, @RequestParam(required=false) Dosage dosageSetting,
+                              @RequestParam(required=false) Integer medicationCycle, @RequestParam(required=false) Dosage dosageSetting,
                               @RequestParam(required=false) List<LocalDate> recommendedDates, @RequestParam(required=false) LocalDate startDate,
                               @RequestParam(required=false) List<LocalDate> consumptionDates) {
         Medicine medicine = new Medicine(austR);

@@ -38,7 +38,7 @@ public class UserController {
         return userRepository.findByFullName(fullName);
     }
 
-    @RequestMapping(value = "user/medicine/delete") //NOTE: Requires austR to be an existing medicine in the "Medicine" database
+    @RequestMapping(value = "user/medicine/delete")
     public String deleteMedicineFromUser(@RequestParam String fullName, @RequestParam String austR) {
         User user = userRepository.findByFullName(fullName);
         if (user != null) {
@@ -59,5 +59,14 @@ public class UserController {
             return "Failure, medicine or user did not exist";
         }
         return "Success";
+    }
+
+    @RequestMapping(value = "user/medicine/getAll")
+    public List<UserMedicine> getAllUserMedicine(@RequestParam String fullName) {
+        User user = userRepository.findByFullName(fullName);
+        if (user != null) {
+            return user.medicines;
+        }
+        return null;
     }
 }
