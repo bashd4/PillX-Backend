@@ -3,5 +3,5 @@ package Rever.PillX.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface UserRepository extends MongoRepository<User, String> {
-    User findByFullName(String fullName);
+    User findByEmail(String email);
 }

@@ -15,8 +15,9 @@ public class User {
         MALE, FEMALE, OTHER, UNKNOWN
     }
     @Id
-    public String fullName;
+    public String email;
 
+    public String fullName;
     public String password; //TODO: Implement this securely after core functionality is done
     public LocalDate dateOfBirth;
     public Gender gender = Gender.UNKNOWN;
@@ -25,8 +26,9 @@ public class User {
 
     public User() {}
 
-    public User (String name, LocalDate dateOfBirth, Gender gender, List<String> allergies,
+    public User (String email, String name, LocalDate dateOfBirth, Gender gender, List<String> allergies,
                  List<UserMedicine> medicines) {
+        this.email = email;
         this.fullName = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;

@@ -22,11 +22,11 @@ public class UserController {
     MedicineRepository medicineRepository;
 
     @RequestMapping(value = "/user/add")
-    public String addUser(@RequestParam String fullName, @RequestParam(required=false) LocalDate dateOfBirth,
-                          @RequestParam(required=false) User.Gender gender, @RequestParam(required=false) List<String> allergies,
-                          @RequestParam(required=false) List<UserMedicine> medicines) {
+    public String addUser(@RequestParam String email, @RequestParam(required=false) String fullName,
+                          @RequestParam(required=false) LocalDate dateOfBirth, @RequestParam(required=false) User.Gender gender,
+                          @RequestParam(required=false) List<String> allergies, @RequestParam(required=false) List<UserMedicine> medicines) {
 
-        User newUser = new User(fullName, dateOfBirth, (gender != null) ? gender : User.Gender.UNKNOWN,
+        User newUser = new User(email, fullName, dateOfBirth, (gender != null) ? gender : User.Gender.UNKNOWN,
                 (allergies != null) ? allergies : new ArrayList<>(), (medicines != null) ? medicines : new ArrayList<>());
 
         userRepository.save(newUser);
@@ -34,13 +34,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/get")
-    public User getUser(@RequestParam String fullName) {
-        return userRepository.findByFullName(fullName);
+    public User getUser(@RequestParam String email) {
+        return userRepository.findByEmail(email);
     }
 
     @RequestMapping(value = "user/medicine/delete")
-    public String deleteMedicineFromUser(@RequestParam String fullName, @RequestParam String austR) {
-        User user = userRepository.findByFullName(fullName);
+    public String deleteMedicineFromUser(@RequestParam String email, @RequestParam String austR) {
+        User user = userRepository.findByEmail(email);
         if (user != null) {
             user.DeleteMedicineByAustR(austR);
             return "Success";
@@ -49,9 +49,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "user/medicine/add") //NOTE: Requires austR to be an existing medicine in the "Medicine" database
-    public String addMedicineToUser(@RequestParam String fullName, @RequestParam String austR) {
+    public String addMedicineToUser(@RequestParam String email, @RequestParam String austR) {
         Medicine medicine = medicineRepository.findByAustR(austR);
-        User user = userRepository.findByFullName(fullName);
+        User user = userRepository.findByEmail(email);
         if (medicine != null && user != null) {
             UserMedicine userMedicine = new UserMedicine(user.fullName, medicine);
             user.medicines.add(userMedicine);
@@ -62,8 +62,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "user/medicine/getAll")
-    public List<UserMedicine> getAllUserMedicine(@RequestParam String fullName) {
-        User user = userRepository.findByFullName(fullName);
+    public List<UserMedicine> getAllUserMedicine(@RequestParam String email) {
+        User user = userRepository.findByEmail(email);
         if (user != null) {
             return user.medicines;
         }
