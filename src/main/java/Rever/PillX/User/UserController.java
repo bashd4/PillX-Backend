@@ -26,16 +26,25 @@ public class UserController {
                           @RequestParam(required=false) LocalDate dateOfBirth, @RequestParam(required=false) User.Gender gender,
                           @RequestParam(required=false) List<String> allergies, @RequestParam(required=false) List<UserMedicine> medicines) {
 
+        if (email == null || !User.validateEmail(email)) {
+            return String.format("Invalid email address %s", email);
+        }
+
         User newUser = new User(email, fullName, dateOfBirth, (gender != null) ? gender : User.Gender.UNKNOWN,
                 (allergies != null) ? allergies : new ArrayList<>(), (medicines != null) ? medicines : new ArrayList<>());
 
         userRepository.save(newUser);
-        return String.format("Saved new user %s", fullName);
+        return String.format("Saved new user %s", email);
     }
 
     @RequestMapping(value = "/user/get")
     public User getUser(@RequestParam String email) {
-        return userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            //Error, email does not exist, not sure what to return to request
+            System.out.println("User does not exist");
+        }
+        return user;
     }
 
     @RequestMapping(value = "user/medicine/delete")
