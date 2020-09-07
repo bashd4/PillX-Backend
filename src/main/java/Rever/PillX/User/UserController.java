@@ -47,6 +47,11 @@ public class UserController {
         return user;
     }
 
+    @RequestMapping(value = "user/delete")
+    public void deleteUser(@RequestParam String email) {
+        userRepository.deleteById(email);
+    }
+
     @RequestMapping(value = "user/medicine/delete")
     public String deleteMedicineFromUser(@RequestParam String email, @RequestParam String austR) {
         User user = userRepository.findByEmail(email);
