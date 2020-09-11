@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -44,5 +45,10 @@ public class MedicineController {
         medicineRepository.deleteById(austR);
 
         return String.format("Deleted medicine %s", austR);
+    }
+
+    @RequestMapping(value = "medicine/getAll")
+    public List<Medicine> getAllMedicine() {
+        return medicineRepository.findAll();
     }
 }
