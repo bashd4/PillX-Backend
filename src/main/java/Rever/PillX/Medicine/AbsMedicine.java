@@ -19,7 +19,7 @@ public abstract class AbsMedicine {
 
     public Dosage recommendedDosage;
     public List<String> ingredients;
-    public List<String> drugInteractions;
+    public List<String> drugInteractions; // Do these need to be medicines?
 
     public AbsMedicine() {}
 

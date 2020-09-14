@@ -17,14 +17,14 @@ public class MedicineController {
 
     @RequestMapping(value = "/medicine/add")
     public String addMedicine(@RequestParam String austR, @RequestParam(required=false) String name, @RequestParam(required=false) String description,
-                              @RequestParam(required=false) String dosageDescription, @RequestParam(required=false)Medicine.AdministrationMethods method,
+                              @RequestParam(required=false) String dosageDescription, @RequestParam(required=false)Medicine.AdministrationMethods administrationMethod,
                               @RequestParam(required=false) String sideEffects, @RequestParam(required=false) Dosage recommendedDosage,
                               @RequestParam(required=false) List<String> ingredients, @RequestParam(required=false) List<String> drugInteractions) {
         Medicine medicine = new Medicine(austR);
         medicine.name = name;
         medicine.description = description;
         medicine.dosageDescription = dosageDescription;
-        medicine.routeOfAdministration = method;
+        medicine.routeOfAdministration = administrationMethod;
         medicine.sideEffects = sideEffects;
         medicine.recommendedDosage = recommendedDosage;
         medicine.ingredients = ingredients;
@@ -51,9 +51,66 @@ public class MedicineController {
         return medicineRepository.findAll();
     }
 
-    @RequestMapping(value = "medicine/recommendedDosage/add")
-    public String addDosage(@RequestParam String austR, @RequestParam int dosageAmount, @RequestParam int dailyDosageAmount,
-                            @RequestParam int frequency) {
+    //region Updating medicine fields
+
+    @RequestMapping(value = "medicine/update/name")
+    public String updateName(@RequestParam String austR, @RequestParam String name) {
+        Medicine medicine = medicineRepository.findByAustR(austR);
+        if (medicine != null) {
+            medicine.name = name;
+            medicineRepository.save(medicine);
+            return "Success";
+        }
+        return "Failure";
+    }
+
+    @RequestMapping(value = "medicine/update/description")
+    public String updateDescription(@RequestParam String austR, @RequestParam String description) {
+        Medicine medicine = medicineRepository.findByAustR(austR);
+        if (medicine != null) {
+            medicine.description = description;
+            medicineRepository.save(medicine);
+            return "Success";
+        }
+        return "Failure";
+    }
+
+    @RequestMapping(value = "medicine/update/dosageDescription")
+    public String updateDosageDescription(@RequestParam String austR, @RequestParam String dosageDescription) {
+        Medicine medicine = medicineRepository.findByAustR(austR);
+        if (medicine != null) {
+            medicine.dosageDescription = dosageDescription;
+            medicineRepository.save(medicine);
+            return "Success";
+        }
+        return "Failure";
+    }
+
+    @RequestMapping(value = "medicine/update/administrationMethod")
+    public String updateAdministrationMethod(@RequestParam String austR, @RequestParam AbsMedicine.AdministrationMethods administrationMethod) {
+        Medicine medicine = medicineRepository.findByAustR(austR);
+        if (medicine != null) {
+            medicine.routeOfAdministration = administrationMethod;
+            medicineRepository.save(medicine);
+            return "Success";
+        }
+        return "Failure";
+    }
+
+    @RequestMapping(value = "medicine/update/sideEffects")
+    public String updateSideEffects(@RequestParam String austR, @RequestParam String sideEffects) {
+        Medicine medicine = medicineRepository.findByAustR(austR);
+        if (medicine != null) {
+            medicine.sideEffects = sideEffects;
+            medicineRepository.save(medicine);
+            return "Success";
+        }
+        return "Failure";
+    }
+
+    @RequestMapping(value = "medicine/update/recommendedDosage")
+    public String updateRecommendedDosage(@RequestParam String austR, @RequestParam int dosageAmount, @RequestParam int dailyDosageAmount,
+                               @RequestParam int frequency) {
         Medicine medicine = medicineRepository.findByAustR(austR);
         if (medicine != null) {
             medicine.recommendedDosage = new Dosage(dosageAmount, dailyDosageAmount, frequency);
@@ -62,4 +119,27 @@ public class MedicineController {
         }
         return "Failure";
     }
+
+    @RequestMapping(value = "medicine/update/ingredients")
+    public String updateIngredients(@RequestParam String austR, @RequestParam List<String> ingredients) {
+        Medicine medicine = medicineRepository.findByAustR(austR);
+        if (medicine != null) {
+            medicine.ingredients = ingredients;
+            medicineRepository.save(medicine);
+            return "Success";
+        }
+        return "Failure";
+    }
+
+    @RequestMapping(value = "medicine/update/drugInteractions")
+    public String updateDrugInteractions(@RequestParam String austR, @RequestParam List<String> drugInteractions) {
+        Medicine medicine = medicineRepository.findByAustR(austR);
+        if (medicine != null) {
+            medicine.drugInteractions = drugInteractions;
+            medicineRepository.save(medicine);
+            return "Success";
+        }
+        return "Failure";
+    }
+    //endregion
 }
