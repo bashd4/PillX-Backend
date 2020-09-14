@@ -58,6 +58,7 @@ public class UserController {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             user.deleteMedicineByAustR(austR);
+            userRepository.save(user);
             return "Success";
         }
         return "Failure";
