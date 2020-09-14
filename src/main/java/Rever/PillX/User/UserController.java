@@ -1,5 +1,6 @@
 package Rever.PillX.User;
 
+import Rever.PillX.Medicine.Dosage;
 import Rever.PillX.Medicine.Medicine;
 import Rever.PillX.Medicine.MedicineRepository;
 import Rever.PillX.Medicine.UserMedicine;
@@ -56,7 +57,7 @@ public class UserController {
     public String deleteMedicineFromUser(@RequestParam String email, @RequestParam String austR) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
-            user.DeleteMedicineByAustR(austR);
+            user.deleteMedicineByAustR(austR);
             return "Success";
         }
         return "Failure";
@@ -82,5 +83,19 @@ public class UserController {
             return user.medicines;
         }
         return null;
+    }
+
+    @RequestMapping(value = "/user/medicine/dosage/add")
+    public String addDosage(@RequestParam String email, @RequestParam String austR, @RequestParam int dosageAmount, @RequestParam int dailyDosageAmount,
+                            @RequestParam int frequency) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            UserMedicine userMedicine = user.findMedicineByAustR(austR);
+            if (userMedicine != null) {
+                userMedicine.recommendedDosage = new Dosage(dosageAmount, dailyDosageAmount, frequency);
+                return "Success";
+            }
+        }
+        return "Failure";
     }
 }

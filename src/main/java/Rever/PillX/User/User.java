@@ -38,13 +38,22 @@ public class User {
         this.medicines = medicines;
     }
 
-    public void DeleteMedicineByAustR(String austR) {
+    public void deleteMedicineByAustR(String austR) {
         for (int i = 0; i < medicines.size(); i++) {
             if (medicines.get(i).fullNameAustR.equals(UserMedicine.ConvertFullNameAndAustR(this.fullName, austR))) {
                 medicines.remove(i);
                 break;
             }
         }
+    }
+
+    public UserMedicine findMedicineByAustR(String austR) {
+        for (UserMedicine medicine : medicines) {
+            if (medicine.austR.equals(austR)) {
+                return medicine;
+            }
+        }
+        return null;
     }
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
@@ -54,6 +63,7 @@ public class User {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
     }
+
 }
 
 

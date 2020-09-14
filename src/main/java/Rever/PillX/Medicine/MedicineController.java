@@ -51,4 +51,15 @@ public class MedicineController {
     public List<Medicine> getAllMedicine() {
         return medicineRepository.findAll();
     }
+
+    @RequestMapping(value = "medicine/recommendedDosage/add")
+    public String addDosage(@RequestParam String austR, @RequestParam int dosageAmount, @RequestParam int dailyDosageAmount,
+                            @RequestParam int frequency) {
+        Medicine medicine = medicineRepository.findByAustR(austR);
+        if (medicine != null) {
+            medicine.recommendedDosage = new Dosage(dosageAmount, dailyDosageAmount, frequency);
+            return "Success";
+        }
+        return "Failure";
+    }
 }
