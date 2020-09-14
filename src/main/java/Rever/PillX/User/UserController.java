@@ -70,6 +70,7 @@ public class UserController {
         if (medicine != null && user != null) {
             UserMedicine userMedicine = new UserMedicine(user.fullName, medicine);
             user.medicines.add(userMedicine);
+            userRepository.save(user);
         } else {
             return "Failure, medicine or user did not exist";
         }
@@ -93,6 +94,7 @@ public class UserController {
             UserMedicine userMedicine = user.findMedicineByAustR(austR);
             if (userMedicine != null) {
                 userMedicine.recommendedDosage = new Dosage(dosageAmount, dailyDosageAmount, frequency);
+                userRepository.save(user);
                 return "Success";
             }
         }

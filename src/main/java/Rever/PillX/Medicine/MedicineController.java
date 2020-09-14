@@ -58,6 +58,7 @@ public class MedicineController {
         Medicine medicine = medicineRepository.findByAustR(austR);
         if (medicine != null) {
             medicine.recommendedDosage = new Dosage(dosageAmount, dailyDosageAmount, frequency);
+            medicineRepository.save(medicine);
             return "Success";
         }
         return "Failure";
