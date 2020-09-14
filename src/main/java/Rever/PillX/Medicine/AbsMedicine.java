@@ -7,7 +7,7 @@ public abstract class AbsMedicine {
 
     //Add new administration methods here
     public enum AdministrationMethods {
-        PILL, INTRAVENOUS
+        ORAL, INTRAVENOUS
     }
 
     public String austR;

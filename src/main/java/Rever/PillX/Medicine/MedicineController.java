@@ -19,10 +19,7 @@ public class MedicineController {
     public String addMedicine(@RequestParam String austR, @RequestParam(required=false) String name, @RequestParam(required=false) String description,
                               @RequestParam(required=false) String dosageDescription, @RequestParam(required=false)Medicine.AdministrationMethods method,
                               @RequestParam(required=false) String sideEffects, @RequestParam(required=false) Dosage recommendedDosage,
-                              @RequestParam(required=false) List<String> ingredients, @RequestParam(required=false) List<String> drugInteractions,
-                              @RequestParam(required=false) Integer medicationCycle, @RequestParam(required=false) Dosage dosageSetting,
-                              @RequestParam(required=false) List<LocalDate> recommendedDates, @RequestParam(required=false) LocalDate startDate,
-                              @RequestParam(required=false) List<LocalDate> consumptionDates) {
+                              @RequestParam(required=false) List<String> ingredients, @RequestParam(required=false) List<String> drugInteractions) {
         Medicine medicine = new Medicine(austR);
         medicine.name = name;
         medicine.description = description;
@@ -30,6 +27,8 @@ public class MedicineController {
         medicine.routeOfAdministration = method;
         medicine.sideEffects = sideEffects;
         medicine.recommendedDosage = recommendedDosage;
+        medicine.ingredients = ingredients;
+        medicine.drugInteractions = drugInteractions;
 
         medicineRepository.save(medicine);
         return String.format("Added medicine %s", austR);
