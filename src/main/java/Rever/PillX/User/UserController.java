@@ -1,6 +1,7 @@
 package Rever.PillX.User;
 
-import Rever.PillX.Medicine.Dosage;
+import Rever.PillX.Medicine.DosageTimes;
+import Rever.PillX.Medicine.DosageTimes;
 import Rever.PillX.Medicine.Medicine;
 import Rever.PillX.Medicine.MedicineRepository;
 import Rever.PillX.Medicine.UserMedicine;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +56,79 @@ public class UserController {
         userRepository.deleteById(email);
     }
 
+    //region Update User fields
+    @RequestMapping(value = "user/fullName/update")
+    public String updateName(@RequestParam String email, @RequestParam String fullName) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            user.fullName = fullName;
+            return "Success";
+        }
+        return "Failure";
+    }
+
+    @RequestMapping(value = "user/dateOfBirth/update")
+    public String updateDateOfBirth(@RequestParam String email, @RequestParam LocalDate dateOfBirth) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            user.dateOfBirth = dateOfBirth;
+            return "Success";
+        }
+        return "Failure";
+    }
+
+    @RequestMapping(value = "user/gender/update")
+    public String updateGender(@RequestParam String email, @RequestParam User.Gender gender) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            user.gender = gender;
+            return "Success";
+        }
+        return "Failure";
+    }
+
+    @RequestMapping(value = "user/allergies/update")
+    public String updateAllergies(@RequestParam String email, @RequestParam List<String> allergies) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            user.allergies = allergies;
+            return "Success";
+        }
+        return "Failure";
+    }
+
+    @RequestMapping(value = "user/allergies/add")
+    public String addAllergy(@RequestParam String email, @RequestParam String allergy) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            for (String userAllergy : user.allergies) {
+                if (userAllergy.equals(allergy)) {
+                    return "Allergy already added";
+                }
+            }
+            user.allergies.add(allergy);
+            return "Success";
+        }
+        return "Failure";
+    }
+
+    @RequestMapping(value = "user/allergies/delete")
+    public String deleteAllergy(@RequestParam String email, @RequestParam String allergy) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            for (int i = 0; i < user.allergies.size(); i++) {
+                if (user.allergies.get(i).equals(allergy)) {
+                    user.allergies.remove(i);
+                    break;
+                }
+            }
+            return "Success";
+        }
+        return "Failure";
+    }
+    //endregion
+
+    //region  User's medicine requests
     @RequestMapping(value = "user/medicine/delete")
     public String deleteMedicineFromUser(@RequestParam String email, @RequestParam String austR) {
         User user = userRepository.findByEmail(email);
@@ -88,19 +163,29 @@ public class UserController {
         return null;
     }
 
+    @RequestMapping(value = "user/medicine/get")
+    public UserMedicine getMedicineByAustR(@RequestParam String email, @RequestParam String austR) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            return user.findMedicineByAustR(austR);
+        }
+        return null;
+    }
+
     @RequestMapping(value = "/user/medicine/dosage/add")
     public String addDosage(@RequestParam String email, @RequestParam String austR, @RequestParam boolean intervalUsage,
-                            @RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam LocalDateTime time,
-                            @RequestParam Dosage.Intervals intervalType, @RequestParam int interval, @RequestParam int[] weekdays) {
+                            @RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam LocalTime time,
+                            @RequestParam DosageTimes.Intervals intervalType, @RequestParam int interval, @RequestParam boolean[] weekdays) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             UserMedicine userMedicine = user.findMedicineByAustR(austR);
             if (userMedicine != null) {
-                userMedicine.recommendedDosage = new Dosage(intervalUsage, startDate, endDate, time, intervalType, interval, weekdays);
+                userMedicine.recommendedDosage = new DosageTimes(intervalUsage, startDate, endDate, time, intervalType, interval, weekdays);
                 userRepository.save(user);
                 return "Success";
             }
         }
         return "Failure";
     }
+    //endregion
 }

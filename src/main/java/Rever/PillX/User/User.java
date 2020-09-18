@@ -56,6 +56,14 @@ public class User {
         return null;
     }
 
+    public List<UserMedicine> GetMedicineOnDate(LocalDate date) {
+        List<UserMedicine> medicinesOnDate = new ArrayList<>();
+        for (int i = 0; i < medicines.size(); i++) {
+            //TODO: implement this once temporaladjuster is added to DosageTimes
+        }
+        return medicinesOnDate;
+    }
+
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 

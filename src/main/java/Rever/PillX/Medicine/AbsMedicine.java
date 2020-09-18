@@ -17,7 +17,7 @@ public abstract class AbsMedicine {
     public Medicine.AdministrationMethods routeOfAdministration;
     public String sideEffects;
 
-    public Dosage recommendedDosage;
+    public DosageTimes recommendedDosage;
     public List<String> ingredients;
     public List<String> drugInteractions; // Do these need to be medicines?
 

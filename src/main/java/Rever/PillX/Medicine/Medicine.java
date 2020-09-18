@@ -2,9 +2,6 @@ package Rever.PillX.Medicine;
 
 import org.springframework.data.annotation.Id;
 
-import java.time.LocalDate;
-import java.util.List;
-
 public class Medicine extends AbsMedicine {
 
     @Id

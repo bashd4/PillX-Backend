@@ -12,10 +12,8 @@ public class UserMedicine extends AbsMedicine {
     public String fullNameAustR;
 
     public int medicationCycle; //this datatype might need to be more customisable, currently represents days between doses
-    public Dosage dosageSetting;
-    public List<LocalDate> recommendedDates; //Not sure if this should be in the Medicine class (is it unique per user?)
+    public DosageTimes dosageSetting;
     public LocalDate startDate;
-    public List<LocalDate> consumptionDates;
 
     public UserMedicine() {}
 
@@ -24,14 +22,11 @@ public class UserMedicine extends AbsMedicine {
         this.fullNameAustR = ConvertFullNameAndAustR(fullName, medicine.austR);
     }
 
-    public UserMedicine(String fullName, Medicine medicine, int medicationCycle, Dosage dosageSetting, List<LocalDate> recommendedDates,
-                        LocalDate startDate, List<LocalDate> consumptionDates) {
+    public UserMedicine(String fullName, Medicine medicine, int medicationCycle, DosageTimes dosageSetting, LocalDate startDate) {
         this(fullName, medicine);
         this.medicationCycle = medicationCycle;
         this.dosageSetting = dosageSetting;
-        this.recommendedDates = recommendedDates;
         this.startDate = startDate;
-        this.consumptionDates = consumptionDates;
     }
 
     public static String ConvertFullNameAndAustR(String fullName, String austR) {
