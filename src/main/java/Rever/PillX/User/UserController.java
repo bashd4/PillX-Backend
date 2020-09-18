@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,13 +89,14 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/medicine/dosage/add")
-    public String addDosage(@RequestParam String email, @RequestParam String austR, @RequestParam int dosageAmount, @RequestParam int dailyDosageAmount,
-                            @RequestParam int frequency) {
+    public String addDosage(@RequestParam String email, @RequestParam String austR, @RequestParam boolean intervalUsage,
+                            @RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam LocalDateTime time,
+                            @RequestParam Dosage.Intervals intervalType, @RequestParam int interval, @RequestParam int[] weekdays) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             UserMedicine userMedicine = user.findMedicineByAustR(austR);
             if (userMedicine != null) {
-                userMedicine.recommendedDosage = new Dosage(dosageAmount, dailyDosageAmount, frequency);
+                userMedicine.recommendedDosage = new Dosage(intervalUsage, startDate, endDate, time, intervalType, interval, weekdays);
                 userRepository.save(user);
                 return "Success";
             }
