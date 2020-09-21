@@ -1,10 +1,8 @@
 package Rever.PillX.Medicine;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +14,11 @@ public class DosageTimes {
     public LocalDate endDate;
     public LocalTime time;
     public enum Intervals{
-        HOUR, DAY, WEEK, MONTH
+        HOURS, DAYS, WEEKS, MONTHS
     }
-
     public Intervals intervalType;
     public int interval;
+
     public boolean[] weekdays = new boolean[7];
 
     public List<LocalDateTime> pillDateTimes = new ArrayList<>();
@@ -45,7 +43,29 @@ public class DosageTimes {
     }
 
     private void extrapolateDatesFromIntervals() {
-
+        TemporalAmount temporalInterval;
+        switch (intervalType) {
+            case HOURS:
+                temporalInterval = Duration.ofHours(interval);
+                break;
+            case DAYS:
+                temporalInterval = Period.ofDays(interval);
+                break;
+            case WEEKS:
+                temporalInterval = Period.ofWeeks(interval);
+                break;
+            case MONTHS:
+                temporalInterval = Period.ofMonths(interval);
+                break;
+            default:
+                /* NOT REACHED */
+                temporalInterval = Period.ofYears(1);
+        }
+        LocalDateTime thisLoopTime = startDate.atTime(time);
+        while (thisLoopTime.isBefore(endDate.atTime(time))) {
+            pillDateTimes.add(thisLoopTime);
+            thisLoopTime.plus(temporalInterval);
+        }
     }
 
     private void extrapolateDatesFromWeekdays() {
