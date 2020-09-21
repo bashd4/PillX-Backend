@@ -5,8 +5,11 @@ import Rever.PillX.Medicine.UserMedicine;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,10 +59,31 @@ public class User {
         return null;
     }
 
-    public List<UserMedicine> GetMedicineOnDate(LocalDate date) {
-        List<UserMedicine> medicinesOnDate = new ArrayList<>();
-        for (int i = 0; i < medicines.size(); i++) {
-            //TODO: implement this once temporaladjuster is added to DosageTimes
+    public Map<UserMedicine, List<LocalDateTime>> GetMedicineOnDate(LocalDate date) {
+        Map<UserMedicine, List<LocalDateTime>> medicinesOnDate = new TreeMap<>();
+        for (UserMedicine medicine : medicines) {
+            int j = 0;
+            List<LocalDateTime> times = new ArrayList<>();
+            while (medicine.dosageSetting.pillDateTimes.get(j).toLocalDate().equals(date)) {
+                times.add(medicine.dosageSetting.pillDateTimes.get(j++));
+            }
+            medicinesOnDate.put(medicine, times);
+        }
+        return medicinesOnDate;
+    }
+
+    public Map<UserMedicine, List<LocalDateTime>> GetMedicineBetweenDates(LocalDate startDate, LocalDate endDate) {
+        Map<UserMedicine, List<LocalDateTime>> medicinesOnDate = new TreeMap<>();
+        for (UserMedicine medicine : medicines) {
+            int j = 0;
+            List<LocalDateTime> times = new ArrayList<>();
+            while ((medicine.dosageSetting.pillDateTimes.get(j).toLocalDate().isAfter(startDate) ||
+                    medicine.dosageSetting.pillDateTimes.get(j).toLocalDate().isEqual(startDate)) &&
+                    (medicine.dosageSetting.pillDateTimes.get(j).toLocalDate().isBefore(endDate) ||
+                            medicine.dosageSetting.pillDateTimes.get(j).toLocalDate().isEqual(endDate))) {
+                times.add(medicine.dosageSetting.pillDateTimes.get(j++));
+            }
+            medicinesOnDate.put(medicine, times);
         }
         return medicinesOnDate;
     }

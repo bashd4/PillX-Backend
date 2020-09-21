@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @RestController
 public class UserController {
@@ -186,6 +188,25 @@ public class UserController {
             }
         }
         return "Failure";
+    }
+
+    @RequestMapping(value = "/user/medicine/getAllOnDate")
+    public Map<UserMedicine, List<LocalDateTime>> getAllOnDate(@RequestParam String email, @RequestParam LocalDate onDate) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            return user.GetMedicineOnDate(onDate);
+        }
+        return new TreeMap<>();
+    }
+
+    @RequestMapping(value = "/user/medicine/getAllBetweenDates")
+    public Map<UserMedicine, List<LocalDateTime>> getAllOnDate(@RequestParam String email, @RequestParam LocalDate startDate,
+                                                               @RequestParam LocalDate endDate) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            return user.GetMedicineBetweenDates(startDate, endDate);
+        }
+        return new TreeMap<>();
     }
     //endregion
 }
