@@ -17,7 +17,7 @@ public class UserMedicine extends AbsMedicine implements Comparable<UserMedicine
         super(medicine);
     }
 
-    public UserMedicine(String fullName, Medicine medicine, DosageTimes dosageSetting, LocalDate startDate) {
+    public UserMedicine(Medicine medicine, DosageTimes dosageSetting, LocalDate startDate) {
         this(medicine);
         this.dosageSetting = dosageSetting;
         this.startDate = startDate;

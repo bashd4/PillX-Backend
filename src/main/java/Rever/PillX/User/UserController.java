@@ -6,6 +6,7 @@ import Rever.PillX.Medicine.Medicine;
 import Rever.PillX.Medicine.MedicineRepository;
 import Rever.PillX.Medicine.UserMedicine;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -176,7 +177,9 @@ public class UserController {
 
     @RequestMapping(value = "/user/medicine/dosage/add/interval")
     public String addDosage(@RequestParam String email, @RequestParam String austR,
-                            @RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam LocalTime time,
+                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime time,
                             @RequestParam DosageTimes.Intervals intervalType, @RequestParam int interval) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
@@ -191,8 +194,11 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/medicine/dosage/add/weekdays")
-    public String addDosage(@RequestParam String email, @RequestParam String austR, @RequestParam LocalDate startDate,
-                            @RequestParam LocalDate endDate,  @RequestParam LocalTime time, @RequestParam boolean[] weekdays) {
+    public String addDosage(@RequestParam String email, @RequestParam String austR,
+                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime time,
+                            @RequestParam boolean[] weekdays) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             UserMedicine userMedicine = user.findMedicineByAustR(austR);
