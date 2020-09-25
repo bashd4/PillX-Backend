@@ -236,8 +236,7 @@ public class UserController {
         if (user != null) {
             UserMedicine userMedicine = user.findMedicineByAustR(austR);
             if (userMedicine != null) {
-                user.TakePill(userMedicine, taken);
-                return "Success";
+                return user.TakePill(userMedicine, taken);
             }
         }
         return "Failure";
