@@ -43,7 +43,7 @@ public class User {
 
     public void deleteMedicineByAustR(String austR) {
         for (int i = 0; i < medicines.size(); i++) {
-            if (medicines.get(i).fullNameAustR.equals(UserMedicine.ConvertFullNameAndAustR(this.fullName, austR))) {
+            if (medicines.get(i).austR.equals(austR)) {
                 medicines.remove(i);
                 break;
             }

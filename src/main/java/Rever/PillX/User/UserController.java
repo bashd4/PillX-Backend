@@ -147,7 +147,7 @@ public class UserController {
         Medicine medicine = medicineRepository.findByAustR(austR);
         User user = userRepository.findByEmail(email);
         if (medicine != null && user != null) {
-            UserMedicine userMedicine = new UserMedicine(user.fullName, medicine);
+            UserMedicine userMedicine = new UserMedicine(medicine);
             user.medicines.add(userMedicine);
             userRepository.save(user);
         } else {

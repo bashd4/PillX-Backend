@@ -8,22 +8,17 @@ import java.util.List;
 
 public class UserMedicine extends AbsMedicine implements Comparable<UserMedicine> {
 
-    //This field is a comma separated fullname and austR number, i.e. Ben Ashdown,03AC3F
-    @Id
-    public String fullNameAustR;
-
     public DosageTimes dosageSetting;
     public LocalDate startDate;
 
     public UserMedicine() {}
 
-    public UserMedicine(String fullName, Medicine medicine) {
+    public UserMedicine(Medicine medicine) {
         super(medicine);
-        this.fullNameAustR = ConvertFullNameAndAustR(fullName, medicine.austR);
     }
 
     public UserMedicine(String fullName, Medicine medicine, DosageTimes dosageSetting, LocalDate startDate) {
-        this(fullName, medicine);
+        this(medicine);
         this.dosageSetting = dosageSetting;
         this.startDate = startDate;
     }
@@ -33,7 +28,4 @@ public class UserMedicine extends AbsMedicine implements Comparable<UserMedicine
         return userMedicine.hashCode() - this.hashCode();
     }
 
-    public static String ConvertFullNameAndAustR(String fullName, String austR) {
-        return fullName + "," + austR;
-    }
 }
