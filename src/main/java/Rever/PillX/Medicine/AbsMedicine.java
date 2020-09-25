@@ -28,6 +28,7 @@ public abstract class AbsMedicine {
     }
 
     public AbsMedicine(Medicine medicine) {
+        this.austR = medicine.austR;
         this.name = medicine.name;
         this.description = medicine.description;
         this.dosageDescription = medicine.dosageDescription;
