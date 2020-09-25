@@ -174,15 +174,30 @@ public class UserController {
         return null;
     }
 
-    @RequestMapping(value = "/user/medicine/dosage/add")
-    public String addDosage(@RequestParam String email, @RequestParam String austR, @RequestParam boolean intervalUsage,
+    @RequestMapping(value = "/user/medicine/dosage/add/interval")
+    public String addDosage(@RequestParam String email, @RequestParam String austR,
                             @RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam LocalTime time,
-                            @RequestParam DosageTimes.Intervals intervalType, @RequestParam int interval, @RequestParam boolean[] weekdays) {
+                            @RequestParam DosageTimes.Intervals intervalType, @RequestParam int interval) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             UserMedicine userMedicine = user.findMedicineByAustR(austR);
             if (userMedicine != null) {
-                userMedicine.recommendedDosage = new DosageTimes(intervalUsage, startDate, endDate, time, intervalType, interval, weekdays);
+                userMedicine.recommendedDosage = new DosageTimes(true, startDate, endDate, time, intervalType, interval, null);
+                userRepository.save(user);
+                return "Success";
+            }
+        }
+        return "Failure";
+    }
+
+    @RequestMapping(value = "/user/medicine/dosage/add/weekdays")
+    public String addDosage(@RequestParam String email, @RequestParam String austR, @RequestParam LocalDate startDate,
+                            @RequestParam LocalDate endDate,  @RequestParam LocalTime time, @RequestParam boolean[] weekdays) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            UserMedicine userMedicine = user.findMedicineByAustR(austR);
+            if (userMedicine != null) {
+                userMedicine.recommendedDosage = new DosageTimes(false, startDate, endDate, time, null, 0, weekdays);
                 userRepository.save(user);
                 return "Success";
             }
