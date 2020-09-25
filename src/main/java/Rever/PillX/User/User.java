@@ -64,7 +64,7 @@ public class User {
         for (UserMedicine medicine : medicines) {
             int j = 0;
             List<LocalDateTime> times = new ArrayList<>();
-            while (medicine.dosageSetting.pillDateTimes.get(j).toLocalDate().equals(date)) {
+            while (j < medicine.dosageSetting.pillDateTimes.size() && medicine.dosageSetting.pillDateTimes.get(j).toLocalDate().equals(date)) {
                 times.add(medicine.dosageSetting.pillDateTimes.get(j++));
             }
             medicinesOnDate.put(medicine, times);
@@ -73,15 +73,14 @@ public class User {
     }
 
     public Map<UserMedicine, List<LocalDateTime>> GetMedicineBetweenDates(LocalDate startDate, LocalDate endDate) {
-        System.out.println("STARTDATE: " + startDate.toString() + " ENDDATE: " + endDate.toString() + "\n\n\n\n\n\n");
         Map<UserMedicine, List<LocalDateTime>> medicinesOnDate = new TreeMap<>();
         for (UserMedicine medicine : medicines) {
             int j = 0;
             List<LocalDateTime> times = new ArrayList<>();
-            while ((medicine.dosageSetting.pillDateTimes.get(j).toLocalDate().isAfter(startDate) ||
+            while (j < medicine.dosageSetting.pillDateTimes.size() && ((medicine.dosageSetting.pillDateTimes.get(j).toLocalDate().isAfter(startDate) ||
                     medicine.dosageSetting.pillDateTimes.get(j).toLocalDate().isEqual(startDate)) &&
                     (medicine.dosageSetting.pillDateTimes.get(j).toLocalDate().isBefore(endDate) ||
-                            medicine.dosageSetting.pillDateTimes.get(j).toLocalDate().isEqual(endDate))) {
+                            medicine.dosageSetting.pillDateTimes.get(j).toLocalDate().isEqual(endDate)))) {
                 times.add(medicine.dosageSetting.pillDateTimes.get(j++));
             }
             medicinesOnDate.put(medicine, times);
