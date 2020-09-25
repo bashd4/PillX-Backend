@@ -89,6 +89,16 @@ public class User {
         return medicinesOnDate;
     }
 
+    public void TakePill(UserMedicine medicine, LocalDateTime taken) {
+        for (int i = 0; i < medicine.dosageSetting.pillDateTimes.size(); i++) {
+            if (medicine.dosageSetting.pillDateTimes.get(i).equals(taken)) {
+                medicine.dosageSetting.pillDateTimesDone.add(medicine.dosageSetting.pillDateTimes.get(i));
+                medicine.dosageSetting.pillDateTimes.remove(i);
+                break;
+            }
+        }
+    }
+
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 

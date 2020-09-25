@@ -22,6 +22,7 @@ public class DosageTimes {
     public boolean[] weekdays = new boolean[7];
 
     public List<LocalDateTime> pillDateTimes = new ArrayList<>();
+    public List<LocalDateTime> pillDateTimesDone = new ArrayList<>();
 
     public DosageTimes(boolean intervalUsage, LocalDate startDate, LocalDate endDate, LocalTime time, Intervals intervalType, int interval, boolean[] weekdays) {
         this.intervalUsage = intervalUsage;

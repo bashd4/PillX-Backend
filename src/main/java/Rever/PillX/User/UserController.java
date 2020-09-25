@@ -229,5 +229,18 @@ public class UserController {
         }
         return new TreeMap<>();
     }
+
+    @RequestMapping(value = "/user/medicine/pillTaken")
+    public String pillTaken(@RequestParam String email, @RequestParam String austR,  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime taken) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            UserMedicine userMedicine = user.findMedicineByAustR(austR);
+            if (userMedicine != null) {
+                user.TakePill(userMedicine, taken);
+                return "Success";
+            }
+        }
+        return "Failure";
+    }
     //endregion
 }
