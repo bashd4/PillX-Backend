@@ -64,7 +64,7 @@ public class DosageTimes {
         LocalDateTime thisLoopTime = startDate.atTime(time);
         while (thisLoopTime.isBefore(endDate.atTime(time))) {
             pillDateTimes.add(thisLoopTime);
-            thisLoopTime.plus(temporalInterval);
+            thisLoopTime = thisLoopTime.plus(temporalInterval);
         }
     }
 
