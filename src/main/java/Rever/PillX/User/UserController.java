@@ -185,7 +185,7 @@ public class UserController {
         if (user != null) {
             UserMedicine userMedicine = user.findMedicineByAustR(austR);
             if (userMedicine != null) {
-                userMedicine.recommendedDosage = new DosageTimes(true, startDate, endDate, time, intervalType, interval, null);
+                userMedicine.dosageSetting = new DosageTimes(true, startDate, endDate, time, intervalType, interval, null);
                 userRepository.save(user);
                 return "Success";
             }
@@ -203,7 +203,7 @@ public class UserController {
         if (user != null) {
             UserMedicine userMedicine = user.findMedicineByAustR(austR);
             if (userMedicine != null) {
-                userMedicine.recommendedDosage = new DosageTimes(false, startDate, endDate, time, null, 0, weekdays);
+                userMedicine.dosageSetting = new DosageTimes(false, startDate, endDate, time, null, 0, weekdays);
                 userRepository.save(user);
                 return "Success";
             }

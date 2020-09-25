@@ -81,7 +81,8 @@ public class User {
                     medicine.dosageSetting.pillDateTimes.get(j).toLocalDate().isEqual(startDate)) &&
                     (medicine.dosageSetting.pillDateTimes.get(j).toLocalDate().isBefore(endDate) ||
                             medicine.dosageSetting.pillDateTimes.get(j).toLocalDate().isEqual(endDate)))) {
-                times.add(medicine.dosageSetting.pillDateTimes.get(j++));
+                times.add(medicine.dosageSetting.pillDateTimes.get(j));
+                j++;
             }
             medicinesOnDate.put(medicine, times);
         }
