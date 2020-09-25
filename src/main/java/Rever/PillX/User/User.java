@@ -73,6 +73,7 @@ public class User {
     }
 
     public Map<UserMedicine, List<LocalDateTime>> GetMedicineBetweenDates(LocalDate startDate, LocalDate endDate) {
+        System.out.println("STARTDATE: " + startDate.toString() + " ENDDATE: " + endDate.toString() + "\n\n\n\n\n\n");
         Map<UserMedicine, List<LocalDateTime>> medicinesOnDate = new TreeMap<>();
         for (UserMedicine medicine : medicines) {
             int j = 0;
