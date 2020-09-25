@@ -30,7 +30,7 @@ public class UserController {
 
     @RequestMapping(value = "/user/add")
     public String addUser(@RequestParam String email, @RequestParam(required=false) String fullName,
-                          @RequestParam(required=false) LocalDate dateOfBirth, @RequestParam(required=false) User.Gender gender,
+                          @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfBirth, @RequestParam(required=false) User.Gender gender,
                           @RequestParam(required=false) List<String> allergies, @RequestParam(required=false) List<UserMedicine> medicines) {
 
         if (email == null || !User.validateEmail(email)) {
@@ -71,7 +71,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "user/dateOfBirth/update")
-    public String updateDateOfBirth(@RequestParam String email, @RequestParam LocalDate dateOfBirth) {
+    public String updateDateOfBirth(@RequestParam String email, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfBirth) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             user.dateOfBirth = dateOfBirth;
@@ -212,7 +212,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/medicine/getAllOnDate")
-    public Map<UserMedicine, List<LocalDateTime>> getAllOnDate(@RequestParam String email, @RequestParam LocalDate onDate) {
+    public Map<UserMedicine, List<LocalDateTime>> getAllOnDate(@RequestParam String email, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate onDate) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             return user.GetMedicineOnDate(onDate);
@@ -221,8 +221,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/medicine/getAllBetweenDates")
-    public Map<UserMedicine, List<LocalDateTime>> getAllOnDate(@RequestParam String email, @RequestParam LocalDate startDate,
-                                                               @RequestParam LocalDate endDate) {
+    public Map<UserMedicine, List<LocalDateTime>> getAllOnDate(@RequestParam String email, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                                               @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             return user.GetMedicineBetweenDates(startDate, endDate);

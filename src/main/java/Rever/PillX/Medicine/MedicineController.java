@@ -1,6 +1,7 @@
 package Rever.PillX.Medicine;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -111,8 +112,10 @@ public class MedicineController {
     }
 
     @RequestMapping(value = "medicine/recommendedDosage/update")
-    public String updateRecommendedDosage(@RequestParam String austR, @RequestParam boolean intervalUsage, @RequestParam LocalDate startDate,
-                                          @RequestParam LocalDate endDate, @RequestParam LocalTime time, @RequestParam DosageTimes.Intervals intervalType,
+    public String updateRecommendedDosage(@RequestParam String austR, @RequestParam boolean intervalUsage,
+                                          @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                          @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                                          @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime time, @RequestParam DosageTimes.Intervals intervalType,
                                           @RequestParam int interval, @RequestParam boolean[] weekdays) {
         Medicine medicine = medicineRepository.findByAustR(austR);
         if (medicine != null) {
