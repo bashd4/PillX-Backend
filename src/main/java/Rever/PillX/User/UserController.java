@@ -236,7 +236,9 @@ public class UserController {
         if (user != null) {
             UserMedicine userMedicine = user.findMedicineByAustR(austR);
             if (userMedicine != null) {
-                return user.TakePill(userMedicine, taken);
+                String result = user.TakePill(userMedicine, taken);
+                userRepository.save(user);
+                return result;
             }
         }
         return "Failure";
