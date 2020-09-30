@@ -29,7 +29,7 @@ public class UserController {
     MedicineRepository medicineRepository;
 
     @RequestMapping(value = "/user/add")
-    public String addUser(@RequestParam String email, @RequestParam(required=false) String fullName,
+    public String addUser(@RequestParam String email, @RequestParam(required=false) String fullName,  @RequestParam String password,
                           @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfBirth, @RequestParam(required=false) User.Gender gender,
                           @RequestParam(required=false) List<String> allergies, @RequestParam(required=false) List<UserMedicine> medicines) {
 
@@ -37,7 +37,7 @@ public class UserController {
             return String.format("Invalid email address %s", email);
         }
 
-        User newUser = new User(email, fullName, dateOfBirth, (gender != null) ? gender : User.Gender.UNKNOWN,
+        User newUser = new User(email, fullName, password, dateOfBirth, (gender != null) ? gender : User.Gender.UNKNOWN,
                 (allergies != null) ? allergies : new ArrayList<>(), (medicines != null) ? medicines : new ArrayList<>());
 
         userRepository.save(newUser);
@@ -70,11 +70,23 @@ public class UserController {
         return "Failure";
     }
 
+    @RequestMapping(value = "user/password/update")
+    public String updatePassword(@RequestParam String email, @RequestParam String password) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            user.password = password;
+            userRepository.save(user);
+            return "Success";
+        }
+        return "Failure";
+    }
+
     @RequestMapping(value = "user/dateOfBirth/update")
     public String updateDateOfBirth(@RequestParam String email, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfBirth) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             user.dateOfBirth = dateOfBirth;
+            userRepository.save(user);
             return "Success";
         }
         return "Failure";
@@ -85,6 +97,7 @@ public class UserController {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             user.gender = gender;
+            userRepository.save(user);
             return "Success";
         }
         return "Failure";
@@ -95,6 +108,7 @@ public class UserController {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             user.allergies = allergies;
+            userRepository.save(user);
             return "Success";
         }
         return "Failure";
@@ -110,6 +124,7 @@ public class UserController {
                 }
             }
             user.allergies.add(allergy);
+            userRepository.save(user);
             return "Success";
         }
         return "Failure";
@@ -125,6 +140,7 @@ public class UserController {
                     break;
                 }
             }
+            userRepository.save(user);
             return "Success";
         }
         return "Failure";
@@ -230,8 +246,8 @@ public class UserController {
         return new TreeMap<>();
     }
 
-    @RequestMapping(value = "/user/medicine/pillTaken")
-    public String pillTaken(@RequestParam String email, @RequestParam String austR,  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime taken) {
+    @RequestMapping(value = "/user/medicine/takePill")
+    public String takePill(@RequestParam String email, @RequestParam String austR,  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime taken) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             UserMedicine userMedicine = user.findMedicineByAustR(austR);

@@ -31,10 +31,11 @@ public class User {
 
     public User() {}
 
-    public User (String email, String name, LocalDate dateOfBirth, Gender gender, List<String> allergies,
+    public User (String email, String name, String password, LocalDate dateOfBirth, Gender gender, List<String> allergies,
                  List<UserMedicine> medicines) {
         this.email = email;
         this.fullName = name;
+        this.password = password;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.allergies = allergies;
