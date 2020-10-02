@@ -24,17 +24,24 @@ public class FileUploadController {
 
     @RequestMapping(value = "/scanning", method = RequestMethod.POST)
     public String singleFileUpload(@RequestParam("file") MultipartFile file) throws IOException, TesseractException {
-        File convFile = convert(file);
-        if (convFile == null) {
-            return "Failure";
+        File convFile= convert(file);
+        try {
+            if (convFile == null) {
+                return "Failure";
+            }
+            Tesseract tesseract = new Tesseract();
+            //tesseract.setDatapath("E://DataScience//tessdata");
+            String text = tesseract.doOCR(convFile);
+            if (!convFile.delete()) {
+                return "Failed delete";
+            }
+            return text;
+        } catch (TesseractException te) {
+            if (!convFile.delete()) {
+                System.out.println("Failed delete after catching TesseractException");
+            }
+            throw te;
         }
-        Tesseract tesseract = new Tesseract();
-        //tesseract.setDatapath("E://DataScience//tessdata");
-        String text = tesseract.doOCR(convFile);
-        if (!convFile.delete()) {
-            return "Failed delete";
-        }
-        return text;
     }
 
     public static File convert(MultipartFile file) throws IOException {
