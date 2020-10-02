@@ -36,11 +36,11 @@ public class FileUploadController {
                 return "Failed delete";
             }
             return text;
-        } catch (TesseractException te) {
+        } catch (Exception ex) {
             if (!convFile.delete()) {
                 System.out.println("Failed delete after catching TesseractException");
             }
-            throw te;
+            throw ex;
         }
     }
 
