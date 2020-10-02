@@ -39,10 +39,12 @@ public class FileUploadController {
 
     public static File convert(MultipartFile file) throws IOException {
         if (file.getOriginalFilename() == null) {
+            System.out.println("No original Filename");
             return null;
         }
         File convFile = new File(file.getOriginalFilename());
         if (!convFile.createNewFile()) {
+            System.out.println("Failed to create file");
             return null;
         }
         FileOutputStream fos = new FileOutputStream(convFile);
