@@ -36,6 +36,7 @@ public class FileUploadController {
             if (!convFile.delete()) {
                 return "Failed delete";
             }
+            System.out.println("FOUND TEXT " + text + " \n\n\n\n\n");
             return text;
         } catch (Exception ex) {
             if (!convFile.delete()) {
