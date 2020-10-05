@@ -24,6 +24,7 @@ public class FileUploadController {
 
     @RequestMapping(value = "/scanning", method = RequestMethod.POST)
     public String singleFileUpload(@RequestParam("file") MultipartFile file) throws IOException, TesseractException {
+        System.out.println("GOT REQUEST\n\n\n\n\n\n\n\n");
         File convFile= convert(file);
         try {
             if (convFile == null) {
@@ -36,11 +37,11 @@ public class FileUploadController {
                 return "Failed delete";
             }
             return text;
-        } catch (TesseractException te) {
+        } catch (Exception ex) {
             if (!convFile.delete()) {
                 System.out.println("Failed delete after catching TesseractException");
             }
-            throw te;
+            throw ex;
         }
     }
 
