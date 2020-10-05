@@ -30,7 +30,7 @@ public class FileUploadController {
                 return "Failure";
             }
             Tesseract tesseract = new Tesseract();
-            //tesseract.setDatapath("E://DataScience//tessdata");
+            tesseract.setDatapath("/home/PillX-Backend/tessdata/");
             String text = tesseract.doOCR(convFile);
             if (!convFile.delete()) {
                 return "Failed delete";
