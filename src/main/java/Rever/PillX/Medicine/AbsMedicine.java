@@ -5,17 +5,21 @@ import java.util.List;
 
 public abstract class AbsMedicine {
 
-    //Add new administration methods here
-    public enum AdministrationMethods {
-        ORAL, INTRAVENOUS
+    public enum ActionSites {
+        BRAIN, KNEE, ARTERY
+    }
+
+    public enum Administration {
+        ORAL, EXTERNAL
     }
 
     public String identifier;
     public String name;
     public String description;
     public String dosageDescription;
-    public Medicine.AdministrationMethods routeOfAdministration;
-    public String sideEffects;
+
+    public List<Administration> administrationMethod;
+    public List<ActionSites> actionSites;
 
     public DosageTimes recommendedDosage;
     public List<String> ingredients;
@@ -32,8 +36,8 @@ public abstract class AbsMedicine {
         this.name = medicine.name;
         this.description = medicine.description;
         this.dosageDescription = medicine.dosageDescription;
-        this.routeOfAdministration = medicine.routeOfAdministration;
-        this.sideEffects = medicine.sideEffects;
+        this.administrationMethod = medicine.administrationMethod;
+        this.actionSites = medicine.actionSites;
         this.recommendedDosage = medicine.recommendedDosage;
         this.ingredients = medicine.ingredients;
         this.drugInteractions = medicine.drugInteractions;

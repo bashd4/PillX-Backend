@@ -20,15 +20,15 @@ public class MedicineController {
 
     @RequestMapping(value = "/medicine/add")
     public String addMedicine(@RequestParam String identifier, @RequestParam(required=false) String name, @RequestParam(required=false) String description,
-                              @RequestParam(required=false) String dosageDescription, @RequestParam(required=false)Medicine.AdministrationMethods administrationMethod,
-                              @RequestParam(required=false) String sideEffects, @RequestParam(required=false) DosageTimes recommendedDosage,
+                              @RequestParam(required=false) String dosageDescription, @RequestParam(required=false) List<AbsMedicine.Administration> administrationMethod,
+                              @RequestParam(required=false) List<AbsMedicine.ActionSites> actionSites, @RequestParam(required=false) DosageTimes recommendedDosage,
                               @RequestParam(required=false) List<String> ingredients, @RequestParam(required=false) List<String> drugInteractions) {
         Medicine medicine = new Medicine(identifier);
         medicine.name = name;
         medicine.description = description;
         medicine.dosageDescription = dosageDescription;
-        medicine.routeOfAdministration = administrationMethod;
-        medicine.sideEffects = sideEffects;
+        medicine.administrationMethod = administrationMethod;
+        medicine.actionSites = actionSites;
         medicine.recommendedDosage = recommendedDosage;
         medicine.ingredients = ingredients;
         medicine.drugInteractions = drugInteractions;
@@ -90,21 +90,49 @@ public class MedicineController {
     }
 
     @RequestMapping(value = "medicine/administrationMethod/update")
-    public String updateAdministrationMethod(@RequestParam String identifier, @RequestParam AbsMedicine.AdministrationMethods administrationMethod) {
+    public String updateAdministrationMethod(@RequestParam String identifier, @RequestParam List<AbsMedicine.Administration> administrationMethod) {
         Medicine medicine = medicineRepository.findByidentifier(identifier);
         if (medicine != null) {
-            medicine.routeOfAdministration = administrationMethod;
+            medicine.administrationMethod = administrationMethod;
             medicineRepository.save(medicine);
             return "Success";
         }
         return "Failure";
     }
 
+    @RequestMapping(value = "medicine/administrationMethod/get")
+    public List<AbsMedicine.Administration> getAdministrationMethod(@RequestParam String identifier, @RequestParam List<AbsMedicine.Administration> administrationMethod) {
+        Medicine medicine = medicineRepository.findByidentifier(identifier);
+        if (medicine != null) {
+            return medicine.administrationMethod;
+        }
+        return new ArrayList<>();
+    }
+
+    @RequestMapping(value = "medicine/actionSites/update")
+    public String updateActionSites(@RequestParam String identifier, @RequestParam List<AbsMedicine.ActionSites> actionSites) {
+        Medicine medicine = medicineRepository.findByidentifier(identifier);
+        if (medicine != null) {
+            medicine.actionSites = actionSites;
+            medicineRepository.save(medicine);
+            return "Success";
+        }
+        return "Failure";
+    }
+
+    @RequestMapping(value = "medicine/actionSites/get")
+    public List<AbsMedicine.ActionSites> getActionSites(@RequestParam String identifier, @RequestParam List<AbsMedicine.ActionSites> actionSites) {
+        Medicine medicine = medicineRepository.findByidentifier(identifier);
+        if (medicine != null) {
+            return medicine.actionSites;
+        }
+        return new ArrayList<>();
+    }
+
     @RequestMapping(value = "medicine/sideEffects/update")
     public String updateSideEffects(@RequestParam String identifier, @RequestParam String sideEffects) {
         Medicine medicine = medicineRepository.findByidentifier(identifier);
         if (medicine != null) {
-            medicine.sideEffects = sideEffects;
             medicineRepository.save(medicine);
             return "Success";
         }
