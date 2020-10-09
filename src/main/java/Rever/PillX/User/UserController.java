@@ -36,7 +36,6 @@ public class UserController {
         if (email == null || !User.validateEmail(email)) {
             return String.format("Invalid email address %s", email);
         }
-
         User newUser = new User(email, fullName, password, dateOfBirth, (gender != null) ? gender : User.Gender.UNKNOWN,
                 (allergies != null) ? allergies : new ArrayList<>(), (medicines != null) ? medicines : new ArrayList<>());
 
@@ -149,19 +148,19 @@ public class UserController {
 
     //region  User's medicine requests
     @RequestMapping(value = "user/medicine/delete")
-    public String deleteMedicineFromUser(@RequestParam String email, @RequestParam String austR) {
+    public String deleteMedicineFromUser(@RequestParam String email, @RequestParam String identifier) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
-            user.deleteMedicineByAustR(austR);
+            user.deleteMedicineByidentifier(identifier);
             userRepository.save(user);
             return "Success";
         }
         return "Failure";
     }
 
-    @RequestMapping(value = "user/medicine/add") //NOTE: Requires austR to be an existing medicine in the "Medicine" database
-    public String addMedicineToUser(@RequestParam String email, @RequestParam String austR) {
-        Medicine medicine = medicineRepository.findByAustR(austR);
+    @RequestMapping(value = "user/medicine/add") //NOTE: Requires identifier to be an existing medicine in the "Medicine" database
+    public String addMedicineToUser(@RequestParam String email, @RequestParam String identifier) {
+        Medicine medicine = medicineRepository.findByidentifier(identifier);
         User user = userRepository.findByEmail(email);
         if (medicine != null && user != null) {
             UserMedicine userMedicine = new UserMedicine(medicine);
@@ -183,23 +182,23 @@ public class UserController {
     }
 
     @RequestMapping(value = "user/medicine/get")
-    public UserMedicine getMedicineByAustR(@RequestParam String email, @RequestParam String austR) {
+    public UserMedicine getMedicineByidentifier(@RequestParam String email, @RequestParam String identifier) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
-            return user.findMedicineByAustR(austR);
+            return user.findMedicineByidentifier(identifier);
         }
         return null;
     }
 
     @RequestMapping(value = "/user/medicine/dosage/add/interval")
-    public String addDosage(@RequestParam String email, @RequestParam String austR,
+    public String addDosage(@RequestParam String email, @RequestParam String identifier,
                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime time,
                             @RequestParam DosageTimes.Intervals intervalType, @RequestParam int interval) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
-            UserMedicine userMedicine = user.findMedicineByAustR(austR);
+            UserMedicine userMedicine = user.findMedicineByidentifier(identifier);
             if (userMedicine != null) {
                 userMedicine.dosageSetting = new DosageTimes(true, startDate, endDate, time, intervalType, interval, null);
                 userRepository.save(user);
@@ -210,14 +209,14 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/medicine/dosage/add/weekdays")
-    public String addDosage(@RequestParam String email, @RequestParam String austR,
+    public String addDosage(@RequestParam String email, @RequestParam String identifier,
                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime time,
                             @RequestParam boolean[] weekdays) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
-            UserMedicine userMedicine = user.findMedicineByAustR(austR);
+            UserMedicine userMedicine = user.findMedicineByidentifier(identifier);
             if (userMedicine != null) {
                 userMedicine.dosageSetting = new DosageTimes(false, startDate, endDate, time, null, 0, weekdays);
                 userRepository.save(user);
@@ -247,10 +246,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/medicine/takePill")
-    public String takePill(@RequestParam String email, @RequestParam String austR,  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime taken) {
+    public String takePill(@RequestParam String email, @RequestParam String identifier,  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime taken) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
-            UserMedicine userMedicine = user.findMedicineByAustR(austR);
+            UserMedicine userMedicine = user.findMedicineByidentifier(identifier);
             if (userMedicine != null) {
                 String result = user.TakePill(userMedicine, taken);
                 userRepository.save(user);
@@ -261,10 +260,10 @@ public class UserController {
     }
 
 /*    @RequestMapping(value = "/user/medicine/untakePill")
-    public String unTakePill(@RequestParam String email, @RequestParam String austR,  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime taken) {
+    public String unTakePill(@RequestParam String email, @RequestParam String identifier,  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime taken) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
-        UserMedicine userMedicine = user.findMedicineByAustR(austR);
+        UserMedicine userMedicine = user.findMedicineByidentifier(identifier);
             if (userMedicine != null) {
                 String result = user.TakePill(userMedicine, taken);
                 userRepository.save(user);

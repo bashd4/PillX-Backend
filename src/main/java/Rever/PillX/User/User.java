@@ -42,18 +42,18 @@ public class User {
         this.medicines = medicines;
     }
 
-    public void deleteMedicineByAustR(String austR) {
+    public void deleteMedicineByidentifier(String identifier) {
         for (int i = 0; i < medicines.size(); i++) {
-            if (medicines.get(i).austR.equals(austR)) {
+            if (medicines.get(i).identifier.equals(identifier)) {
                 medicines.remove(i);
                 break;
             }
         }
     }
 
-    public UserMedicine findMedicineByAustR(String austR) {
+    public UserMedicine findMedicineByidentifier(String identifier) {
         for (UserMedicine medicine : medicines) {
-            if (medicine.austR.equals(austR)) {
+            if (medicine.identifier.equals(identifier)) {
                 return medicine;
             }
         }

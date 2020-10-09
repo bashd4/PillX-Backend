@@ -10,7 +10,7 @@ public abstract class AbsMedicine {
         ORAL, INTRAVENOUS
     }
 
-    public String austR;
+    public String identifier;
     public String name;
     public String description;
     public String dosageDescription;
@@ -23,12 +23,12 @@ public abstract class AbsMedicine {
 
     public AbsMedicine() {}
 
-    public AbsMedicine(String austR) {
-        this.austR = austR;
+    public AbsMedicine(String identifier) {
+        this.identifier = identifier;
     }
 
     public AbsMedicine(Medicine medicine) {
-        this.austR = medicine.austR;
+        this.identifier = medicine.identifier;
         this.name = medicine.name;
         this.description = medicine.description;
         this.dosageDescription = medicine.dosageDescription;

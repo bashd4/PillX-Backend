@@ -5,16 +5,16 @@ import org.springframework.data.annotation.Id;
 public class Medicine extends AbsMedicine {
 
     @Id
-    public String austR;
+    public String identifier;
 
     public Medicine() {}
 
-    public Medicine(String austR) {
-        this.austR = austR;
+    public Medicine(String identifier) {
+        this.identifier = identifier;
     }
 
     public Medicine(Medicine medicine) {
         super(medicine);
-        this.austR = medicine.austR;
+        this.identifier = medicine.identifier;
     }
 }
