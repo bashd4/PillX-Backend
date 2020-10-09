@@ -56,6 +56,13 @@ public class FileUploadController {
         File convFile = new File(file.getOriginalFilename());
         if (!convFile.createNewFile()) {
             System.out.println("Failed to create file");
+            if (!convFile.delete()) {
+                System.out.println("Failed to delete file");
+                return null;
+            }
+        }
+        if (!convFile.createNewFile()) {
+            System.out.println("Failed to create file");
             return null;
         }
         FileOutputStream fos = new FileOutputStream(convFile);
