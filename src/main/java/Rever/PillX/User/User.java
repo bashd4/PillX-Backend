@@ -101,6 +101,17 @@ public class User {
         return "Failure";
     }
 
+    public String unTakePill(UserMedicine medicine, LocalDateTime untaken) {
+        for (int i = 0; i < medicine.dosageSetting.pillDateTimesDone.size(); i++) {
+            if (medicine.dosageSetting.pillDateTimesDone.get(i).equals(untaken)) {
+                medicine.dosageSetting.pillDateTimes.add(medicine.dosageSetting.pillDateTimes.get(i));
+                medicine.dosageSetting.pillDateTimesDone.remove(i);
+                return "Success";
+            }
+        }
+        return "Failure";
+    }
+
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 

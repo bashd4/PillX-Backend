@@ -259,18 +259,18 @@ public class UserController {
         return "Failure";
     }
 
-/*    @RequestMapping(value = "/user/medicine/untakePill")
-    public String unTakePill(@RequestParam String email, @RequestParam String identifier,  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime taken) {
+    @RequestMapping(value = "/user/medicine/untakePill")
+    public String untakePill(@RequestParam String email, @RequestParam String identifier,  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime taken) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
         UserMedicine userMedicine = user.findMedicineByidentifier(identifier);
             if (userMedicine != null) {
-                String result = user.TakePill(userMedicine, taken);
+                String result = user.unTakePill(userMedicine, taken);
                 userRepository.save(user);
                 return result;
             }
         }
         return "Failure";
-    }     */
+    }
     //endregion
 }
