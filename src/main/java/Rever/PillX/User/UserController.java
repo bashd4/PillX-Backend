@@ -237,7 +237,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/medicine/getAllBetweenDates")
-    public Map<UserMedicine, List<LocalDateTime>> getAllOnDate(@RequestParam String email, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+    public Map<UserMedicine, List<LocalDateTime>> getAllBetweenDates(@RequestParam String email, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
@@ -259,5 +259,19 @@ public class UserController {
         }
         return "Failure";
     }
+
+/*    @RequestMapping(value = "/user/medicine/untakePill")
+    public String unTakePill(@RequestParam String email, @RequestParam String austR,  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime taken) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+        UserMedicine userMedicine = user.findMedicineByAustR(austR);
+            if (userMedicine != null) {
+                String result = user.TakePill(userMedicine, taken);
+                userRepository.save(user);
+                return result;
+            }
+        }
+        return "Failure";
+    }     */
     //endregion
 }
