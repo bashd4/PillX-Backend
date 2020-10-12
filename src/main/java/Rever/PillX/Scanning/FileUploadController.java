@@ -59,7 +59,6 @@ public class FileUploadController {
                 System.out.println("Failed delete");
                 return null;
             }
-            System.out.println("Failed to create file");
         }
         if (!convFile.createNewFile()) {
             System.out.println("Failed to create file");
