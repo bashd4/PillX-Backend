@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
 
-public class UserMedicine extends AbsMedicine {
+public class UserMedicine extends AbsMedicine implements Comparable<UserMedicine>  {
 
     public DosageTimes dosageSetting;
     public LocalDate startDate;
@@ -20,5 +20,10 @@ public class UserMedicine extends AbsMedicine {
         this(medicine);
         this.dosageSetting = dosageSetting;
         this.startDate = startDate;
+    }
+
+    @Override
+    public int compareTo(UserMedicine userMedicine) {
+        return userMedicine.hashCode() - this.hashCode();
     }
 }
