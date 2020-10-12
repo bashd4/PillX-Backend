@@ -59,11 +59,12 @@ public class FileUploadController {
                 System.out.println("Failed delete");
                 return null;
             }
+            if (!convFile.createNewFile()) {
+                System.out.println("Failed to create file");
+                return null;
+            }
         }
-        if (!convFile.createNewFile()) {
-            System.out.println("Failed to create file");
-            return null;
-        }
+
         FileOutputStream fos = new FileOutputStream(convFile);
         fos.write(file.getBytes());
         fos.close();
