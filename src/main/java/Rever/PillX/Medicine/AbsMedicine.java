@@ -6,7 +6,7 @@ import java.util.List;
 public abstract class AbsMedicine {
 
     public enum ActionSites {
-        BRAIN, KNEE, ARTERY
+        BRAIN, KNEE, ARTERY, HEART
     }
 
     public enum Administration {
