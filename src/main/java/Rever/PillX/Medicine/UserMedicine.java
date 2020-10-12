@@ -4,9 +4,8 @@ import Rever.PillX.User.User;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
-import java.util.List;
 
-public class UserMedicine extends AbsMedicine implements Comparable<UserMedicine> {
+public class UserMedicine extends AbsMedicine {
 
     public DosageTimes dosageSetting;
     public LocalDate startDate;
@@ -22,10 +21,4 @@ public class UserMedicine extends AbsMedicine implements Comparable<UserMedicine
         this.dosageSetting = dosageSetting;
         this.startDate = startDate;
     }
-
-    @Override
-    public int compareTo(UserMedicine userMedicine) {
-        return userMedicine.hashCode() - this.hashCode();
-    }
-
 }
