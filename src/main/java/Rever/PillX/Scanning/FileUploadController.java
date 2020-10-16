@@ -1,10 +1,7 @@
 package Rever.PillX.Scanning;
 
-import Rever.PillX.Medicine.Medicine;
-import Rever.PillX.Medicine.MedicineRepository;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,39 +14,32 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 @RestController
 public class FileUploadController {
 
-    @Autowired
-    MedicineRepository medicineRepository;
-
     @RequestMapping(value = "/scanning", method = RequestMethod.POST)
-    public List<String> singleFileUpload(@RequestParam("file") MultipartFile file) throws IOException, TesseractException {
+    public String singleFileUpload(@RequestParam("file") MultipartFile file) throws IOException, TesseractException {
         System.err.println("GOT REQUEST\n\n\n\n\n\n\n\n");
         File convFile= convert(file);
-        List<String> possibleMedicines = new ArrayList<>();
         try {
             if (convFile == null) {
-                return possibleMedicines;
+                return "Failure";
             }
             Tesseract tesseract = new Tesseract();
-            tesseract.setOcrEngineMode(1); // 0 - Tesseract, 1 - Cube, 2 - Tesseract & Cube
+            tesseract.setOcrEngineMode(3); // 0 - Tesseract, 1 - Cube, 2 - Tesseract & Cube
             tesseract.setDatapath("/home/PillX-Backend/tessdata/");
             String text = tesseract.doOCR(convFile);
             if (!convFile.delete()) {
-                return possibleMedicines;
+                return "Failed delete";
             }
             System.out.println("FOUND TEXT " + text + " \n\n\n\n\n");
-            for (Medicine medicine : medicineRepository.findAll()) {
-                if (text.contains(medicine.identifier)) {
-                    possibleMedicines.add(medicine.identifier);
-                }
-            }
-            return possibleMedicines;
+
+            return text;
         } catch (Exception ex) {
             if (!convFile.delete()) {
                 System.out.println("Failed delete after catching TesseractException");
@@ -65,15 +55,14 @@ public class FileUploadController {
         }
         File convFile = new File(file.getOriginalFilename());
         if (!convFile.createNewFile()) {
-            System.out.println("Failed to create file");
             if (!convFile.delete()) {
-                System.out.println("Failed to delete file");
+                System.out.println("Failed delete");
                 return null;
             }
-        }
-        if (!convFile.createNewFile()) {
-            System.out.println("Failed to create file");
-            return null;
+            if (!convFile.createNewFile()) {
+                System.out.println("Failed to create file");
+                return null;
+            }
         }
         FileOutputStream fos = new FileOutputStream(convFile);
         fos.write(file.getBytes());

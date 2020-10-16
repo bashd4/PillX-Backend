@@ -7,6 +7,7 @@ import Rever.PillX.Medicine.MedicineRepository;
 import Rever.PillX.Medicine.UserMedicine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,6 +42,17 @@ public class UserController {
 
         userRepository.save(newUser);
         return String.format("Saved new user %s", email);
+    }
+
+    @RequestMapping(value = "/user/add/json")
+    public String addUser(@RequestBody User user) {
+
+        if (user.email == null || !User.validateEmail(user.email)) {
+            return String.format("Invalid email address %s", user.email);
+        }
+
+        userRepository.save(user);
+        return String.format("Saved new user %s", user.email);
     }
 
     @RequestMapping(value = "/user/get")
@@ -160,6 +172,23 @@ public class UserController {
 
     @RequestMapping(value = "user/medicine/add") //NOTE: Requires identifier to be an existing medicine in the "Medicine" database
     public String addMedicineToUser(@RequestParam String email, @RequestParam String identifier) {
+        Medicine medicine = medicineRepository.findByidentifier(identifier);
+        User user = userRepository.findByEmail(email);
+        if (medicine != null && user != null) {
+            UserMedicine userMedicine = new UserMedicine(medicine);
+            user.medicines.add(userMedicine);
+            userRepository.save(user);
+        } else {
+            return "Failure, medicine or user did not exist";
+        }
+        return "Success";
+    }
+
+    @RequestMapping(value = "user/medicine/add/json") //NOTE: Requires identifier to be an existing medicine in the "Medicine" database
+    public String addMedicineToUser(@RequestBody Map<String, ?> input) {
+        String email = (String) input.get("email");
+        String identifier = (String) input.get("identifier");
+
         Medicine medicine = medicineRepository.findByidentifier(identifier);
         User user = userRepository.findByEmail(email);
         if (medicine != null && user != null) {
