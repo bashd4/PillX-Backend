@@ -10,7 +10,7 @@ public abstract class AbsMedicine {
     }
 
     public enum Administration {
-        ORAL, EXTERNAL, INJECTION
+        ORAL, TOPICAL, INJECTION
     }
 
     public String identifier;
