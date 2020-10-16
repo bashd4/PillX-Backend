@@ -6,11 +6,11 @@ import java.util.List;
 public abstract class AbsMedicine {
 
     public enum ActionSites {
-        BRAIN, KNEE, ARTERY
+        BRAIN, KNEE, ARTERY, PANCREAS
     }
 
     public enum Administration {
-        ORAL, EXTERNAL
+        ORAL, EXTERNAL, INJECTION
     }
 
     public String identifier;

@@ -6,6 +6,7 @@ public class Medicine extends AbsMedicine {
 
     @Id
     public String identifier;
+    public String barcode;
 
     public Medicine() {}
 
