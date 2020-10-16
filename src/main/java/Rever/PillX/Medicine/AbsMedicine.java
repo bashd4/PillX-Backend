@@ -14,6 +14,7 @@ public abstract class AbsMedicine {
     }
 
     public String identifier;
+    public String barcode;
     public String name;
     public String description;
     public String dosageDescription;

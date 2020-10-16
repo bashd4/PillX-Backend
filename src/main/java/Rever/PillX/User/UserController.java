@@ -184,6 +184,20 @@ public class UserController {
         return "Success";
     }
 
+    @RequestMapping(value = "user/medicine/add/barcode") //NOTE: Requires identifier to be an existing medicine in the "Medicine" database
+    public String addMedicineToUserBarcode(@RequestParam String email, @RequestParam String barcode) {
+        Medicine medicine = medicineRepository.findBybarcode(barcode);
+        User user = userRepository.findByEmail(email);
+        if (medicine != null && user != null) {
+            UserMedicine userMedicine = new UserMedicine(medicine);
+            user.medicines.add(userMedicine);
+            userRepository.save(user);
+        } else {
+            return "Failure, medicine or user did not exist";
+        }
+        return "Success";
+    }
+
     @RequestMapping(value = "user/medicine/add/json") //NOTE: Requires identifier to be an existing medicine in the "Medicine" database
     public String addMedicineToUser(@RequestBody Map<String, ?> input) {
         String email = (String) input.get("email");

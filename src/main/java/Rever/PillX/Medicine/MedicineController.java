@@ -55,6 +55,16 @@ public class MedicineController {
     }
 
     //region Updating medicine fields
+    @RequestMapping(value = "medicine/barcode/update")
+    public String updateBarcode(@RequestParam String identifier, @RequestParam String barcode) {
+        Medicine medicine = medicineRepository.findByidentifier(identifier);
+        if (medicine != null) {
+            medicine.barcode = barcode;
+            medicineRepository.save(medicine);
+            return "Success";
+        }
+        return "Failure";
+    }
 
     @RequestMapping(value = "medicine/name/update")
     public String updateName(@RequestParam String identifier, @RequestParam String name) {
