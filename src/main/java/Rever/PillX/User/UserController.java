@@ -184,7 +184,7 @@ public class UserController {
         return "Success";
     }
 
-    @RequestMapping(value = "user/medicine/add/barcode") //NOTE: Requires identifier to be an existing medicine in the "Medicine" database
+    @RequestMapping(value = "user/medicine/add/barcode") //NOTE: Requires barcode to be an existing medicine in the "Medicine" database
     public String addMedicineToUserBarcode(@RequestParam String email, @RequestParam String barcode) {
         Medicine medicine = medicineRepository.findBybarcode(barcode);
         User user = userRepository.findByEmail(email);
