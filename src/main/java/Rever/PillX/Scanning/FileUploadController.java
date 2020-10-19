@@ -27,7 +27,7 @@ public class FileUploadController {
                 return "Failure";
             }
             Tesseract tesseract = new Tesseract();
-            tesseract.setOcrEngineMode(3); // 0 - Tesseract, 1 - Cube, 2 - Tesseract & Cube
+            tesseract.setOcrEngineMode(0); // 0 - Tesseract, 1 - Cube, 2 - Tesseract & Cube
             tesseract.setDatapath("/home/PillX-Backend/tessdata/");
             String text = tesseract.doOCR(convFile);
             if (!convFile.delete()) {
