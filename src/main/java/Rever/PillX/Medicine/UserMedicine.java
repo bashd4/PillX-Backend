@@ -7,8 +7,10 @@ import java.time.LocalDate;
 
 public class UserMedicine extends AbsMedicine implements Comparable<UserMedicine>  {
 
+
     public DosageTimes dosageSetting;
     public LocalDate startDate;
+    public String customName;
 
     public UserMedicine() {}
 

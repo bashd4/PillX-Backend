@@ -233,6 +233,38 @@ public class UserController {
         return null;
     }
 
+    @RequestMapping(value = "/user/medicine/customName/update")
+    public String updateCustomName(@RequestParam String email, @RequestParam String identifier, @RequestParam String customName) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            UserMedicine medicine = user.findMedicineByidentifier(identifier);
+            if (medicine != null) {
+                medicine.customName = customName;
+                userRepository.save(user);
+                return "Success";
+            }
+        }
+        return "Failure";
+    }
+
+    @RequestMapping(value = "/user/medicine/customName/update/json")
+    public String updateCustomName(@RequestBody Map<String, ?> input) {
+        String email = (String) input.get("email");
+        String identifier = (String) input.get("identifier");
+        String customName = (String) input.get("customName");
+
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            UserMedicine medicine = user.findMedicineByidentifier(identifier);
+            if (medicine != null) {
+                medicine.customName = customName;
+                userRepository.save(user);
+                return "Success";
+            }
+        }
+        return "Failure";
+    }
+
     @RequestMapping(value = "/user/medicine/dosage/add/interval")
     public String addDosage(@RequestParam String email, @RequestParam String identifier,
                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
