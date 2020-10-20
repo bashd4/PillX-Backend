@@ -192,7 +192,7 @@ public class UserController {
         } else {
             return "Failure, medicine or user did not exist";
         }
-        return "Success";
+        return medicine.identifier;
     }
 
     @RequestMapping(value = "user/medicine/add/json") //NOTE: Requires identifier to be an existing medicine in the "Medicine" database
