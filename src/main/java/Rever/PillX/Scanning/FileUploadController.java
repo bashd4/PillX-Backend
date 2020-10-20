@@ -2,6 +2,7 @@ package Rever.PillX.Scanning;
 
 import Rever.PillX.Medicine.Medicine;
 import Rever.PillX.Medicine.MedicineRepository;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,7 @@ public class FileUploadController {
         return convFile;
     }
 
+    @JsonAutoDetect
     private class ReturnInfo {
         String identifier;
         String name;
