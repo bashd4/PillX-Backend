@@ -27,19 +27,19 @@ public class FileUploadController {
                 return "Failure";
             }
             Tesseract tesseract = new Tesseract();
-            tesseract.setOcrEngineMode(0); // 0 - Tesseract, 1 - Cube, 2 - Tesseract & Cube
+            //tesseract.setOcrEngineMode(3); // 0 - Tesseract, 1 - Cube, 2 - Tesseract & Cube
             tesseract.setDatapath("/home/PillX-Backend/tessdata/");
             String text = tesseract.doOCR(convFile);
-//            if (!convFile.delete()) {
-//                return "Failed delete";
-//            }
+            if (!convFile.delete()) {
+                return "Failed delete";
+            }
             System.out.println("FOUND TEXT " + text + " \n\n\n\n\n");
 
             return text;
         } catch (Exception ex) {
-//            if (!convFile.delete()) {
-//                System.out.println("Failed delete after catching TesseractException");
-//            }
+            if (!convFile.delete()) {
+                System.out.println("Failed delete after catching TesseractException");
+            }
             throw ex;
         }
     }
@@ -51,10 +51,10 @@ public class FileUploadController {
         }
         File convFile = new File(file.getOriginalFilename());
         if (!convFile.createNewFile()) {
-//            if (!convFile.delete()) {
-//                System.out.println("Failed delete");
-//                return null;
-//            }
+            if (!convFile.delete()) {
+                System.out.println("Failed delete");
+                return null;
+            }
             if (!convFile.createNewFile()) {
                 System.out.println("Failed to create file");
                 return null;
