@@ -88,8 +88,8 @@ public class FileUploadController {
 
     @JsonAutoDetect
     private class ReturnInfo {
-        String identifier;
-        String name;
+        public String identifier;
+        public String name;
 
         public ReturnInfo(String identifier, String name) {
             this.identifier = identifier;
