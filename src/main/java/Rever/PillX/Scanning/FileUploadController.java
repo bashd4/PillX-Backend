@@ -28,9 +28,9 @@ public class FileUploadController {
     MedicineRepository medicineRepository;
 
     @RequestMapping(value = "/scanning", method = RequestMethod.POST)
-    public List<Map<String, String>> singleFileUpload(@RequestParam("file") MultipartFile file) throws IOException, TesseractException {
+    public List<ReturnInfo> singleFileUpload(@RequestParam("file") MultipartFile file) throws IOException, TesseractException {
         System.err.println("GOT REQUEST\n\n\n\n\n\n\n\n");
-        File convFile= convert(file);
+        File convFile = convert(file);
         try {
             if (convFile == null) {
                 return null;
@@ -44,21 +44,15 @@ public class FileUploadController {
             }
             System.out.println("FOUND TEXT " + text + " \n\n\n\n\n");
             List<Medicine> medicineList = medicineRepository.findAll();
-            List<Map<String, String>> results = new ArrayList<>();
+            List<ReturnInfo> results = new ArrayList<>();
             for (Medicine medicine : medicineList) {
                 if (medicine.identifier.contains(text) || medicine.name.contains(text)) {
-                    Map<String, String> medicineInfo = new TreeMap<>();
-                    medicineInfo.put("identifier", medicine.identifier);
-                    medicineInfo.put("name", medicine.name);
-                    results.add(medicineInfo);
+                    results.add(new ReturnInfo(medicine.identifier, medicine.name));
                 }
             }
             if (results.size() == 0) {
-                Medicine defaultMedicine = medicineRepository.findByidentifier("97801");
-                Map<String, String> defaulMedicineInfo = new TreeMap<>();
-                defaulMedicineInfo.put("identifier", defaultMedicine.identifier);
-                defaulMedicineInfo.put("name", defaultMedicine.name);
-                results.add(defaulMedicineInfo);
+                Medicine defaultMedicine = medicineRepository.findByidentifier("97801"); //Default medicine is panadol
+                results.add(new ReturnInfo(defaultMedicine.identifier, defaultMedicine.name));
             }
             return results;
         } catch (Exception ex) {
@@ -89,5 +83,15 @@ public class FileUploadController {
         fos.write(file.getBytes());
         fos.close();
         return convFile;
+    }
+
+    private class ReturnInfo {
+        String identifier;
+        String name;
+
+        public ReturnInfo(String identifier, String name) {
+            this.identifier = identifier;
+            this.name = name;
+        }
     }
 }
