@@ -1,10 +1,7 @@
 package Rever.PillX.User;
 
+import Rever.PillX.Medicine.*;
 import Rever.PillX.Medicine.DosageTimes;
-import Rever.PillX.Medicine.DosageTimes;
-import Rever.PillX.Medicine.Medicine;
-import Rever.PillX.Medicine.MedicineRepository;
-import Rever.PillX.Medicine.UserMedicine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +31,7 @@ public class UserController {
                           @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfBirth, @RequestParam(required=false) User.Gender gender,
                           @RequestParam(required=false) List<String> allergies, @RequestParam(required=false) List<UserMedicine> medicines) {
 
-        if (email == null || !User.validateEmail(email)) {
+        if (email == null || !User.isEmailValid(email)) {
             return String.format("Invalid email address %s", email);
         }
         User newUser = new User(email, fullName, password, dateOfBirth, (gender != null) ? gender : User.Gender.UNKNOWN,
@@ -47,7 +44,7 @@ public class UserController {
     @RequestMapping(value = "/user/add/json")
     public String addUser(@RequestBody User user) {
 
-        if (user.email == null || !User.validateEmail(user.email)) {
+        if (user.email == null || !User.isEmailValid(user.email)) {
             return String.format("Invalid email address %s", user.email);
         }
 
@@ -302,7 +299,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/medicine/getAllOnDate")
-    public Map<UserMedicine, List<LocalDateTime>> getAllOnDate(@RequestParam String email, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate onDate) {
+    public Map<UserMedicine, List<PillReminder>> getAllOnDate(@RequestParam String email, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate onDate) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             return user.GetMedicineOnDate(onDate);
@@ -311,8 +308,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/medicine/getAllBetweenDates")
-    public Map<UserMedicine, List<LocalDateTime>> getAllBetweenDates(@RequestParam String email, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                                                               @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+    public Map<UserMedicine, List<PillReminder>> getAllBetweenDates(@RequestParam String email, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                                                    @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             return user.GetMedicineBetweenDates(startDate, endDate);
