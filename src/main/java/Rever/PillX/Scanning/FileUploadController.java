@@ -1,7 +1,10 @@
 package Rever.PillX.Scanning;
 
+import Rever.PillX.Medicine.Medicine;
+import Rever.PillX.Medicine.MedicineRepository;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +20,9 @@ import java.io.IOException;
 
 @RestController
 public class FileUploadController {
+
+    @Autowired
+    MedicineRepository medicineRepository;
 
     @RequestMapping(value = "/scanning", method = RequestMethod.POST)
     public String singleFileUpload(@RequestParam("file") MultipartFile file) throws IOException, TesseractException {
@@ -34,8 +40,14 @@ public class FileUploadController {
                 return "Failed delete";
             }
             System.out.println("FOUND TEXT " + text + " \n\n\n\n\n");
-
-            return text;
+            Medicine medicine = medicineRepository.findByidentifier(text);
+            if (medicine == null) {
+                medicine = medicineRepository.findByName(text);
+                if (medicine == null) {
+                    medicine = medicineRepository.findByName("PANADOL MINI CAPS paracetamol 500mg tablet blister pack");
+                }
+            }
+            return medicine.identifier;
         } catch (Exception ex) {
             if (!convFile.delete()) {
                 System.out.println("Failed delete after catching TesseractException");
