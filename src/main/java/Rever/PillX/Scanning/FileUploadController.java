@@ -50,7 +50,7 @@ public class FileUploadController {
             return medicine.identifier;
         } catch (Exception ex) {
             if (!convFile.delete()) {
-                System.out.println("Failed delete after catching TesseractException");
+                System.out.println("Failed delete after catching Exception");
             }
             throw ex;
         }
