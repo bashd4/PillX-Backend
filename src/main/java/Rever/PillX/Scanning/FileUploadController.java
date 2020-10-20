@@ -15,7 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 
 @RestController
@@ -25,29 +28,39 @@ public class FileUploadController {
     MedicineRepository medicineRepository;
 
     @RequestMapping(value = "/scanning", method = RequestMethod.POST)
-    public String singleFileUpload(@RequestParam("file") MultipartFile file) throws IOException, TesseractException {
+    public List<Map<String, String>> singleFileUpload(@RequestParam("file") MultipartFile file) throws IOException, TesseractException {
         System.err.println("GOT REQUEST\n\n\n\n\n\n\n\n");
         File convFile= convert(file);
         try {
             if (convFile == null) {
-                return "Failure";
+                return null;
             }
             Tesseract tesseract = new Tesseract();
             tesseract.setOcrEngineMode(0); // 0 - Tesseract, 1 - Cube, 2 - Tesseract & Cube
             tesseract.setDatapath("/home/PillX-Backend/tessdata/");
             String text = tesseract.doOCR(convFile);
             if (!convFile.delete()) {
-                return "Failed delete";
+                System.out.println("Failed delete");
             }
             System.out.println("FOUND TEXT " + text + " \n\n\n\n\n");
-            Medicine medicine = medicineRepository.findByidentifier(text);
-            if (medicine == null) {
-                medicine = medicineRepository.findByName(text);
-                if (medicine == null) {
-                    medicine = medicineRepository.findByName("PANADOL MINI CAPS paracetamol 500mg tablet blister pack");
+            List<Medicine> medicineList = medicineRepository.findAll();
+            List<Map<String, String>> results = new ArrayList<>();
+            for (Medicine medicine : medicineList) {
+                if (medicine.identifier.contains(text) || medicine.name.contains(text)) {
+                    Map<String, String> medicineInfo = new TreeMap<>();
+                    medicineInfo.put("identifier", medicine.identifier);
+                    medicineInfo.put("name", medicine.name);
+                    results.add(medicineInfo);
                 }
             }
-            return medicine.identifier;
+            if (results.size() == 0) {
+                Medicine defaultMedicine = medicineRepository.findByidentifier("97801");
+                Map<String, String> defaulMedicineInfo = new TreeMap<>();
+                defaulMedicineInfo.put("identifier", defaultMedicine.identifier);
+                defaulMedicineInfo.put("name", defaultMedicine.name);
+                results.add(defaulMedicineInfo);
+            }
+            return results;
         } catch (Exception ex) {
             if (!convFile.delete()) {
                 System.out.println("Failed delete after catching Exception");
