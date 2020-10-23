@@ -6,6 +6,10 @@ public class PillReminder {
     public LocalDateTime time;
     public boolean taken;
 
+    public PillReminder() {
+
+    }
+
     public PillReminder(LocalDateTime time) {
         this.time = time;
         this.taken = false;
