@@ -16,6 +16,14 @@ public class PillReminder {
         this.taken = taken;
     }
 
+    public boolean gettaken() {
+        return taken;
+    }
+
+    public LocalDateTime gettime() {
+        return time;
+    }
+
     public void take() {
         taken = true;
     }
