@@ -4,10 +4,7 @@ import Rever.PillX.Medicine.*;
 import Rever.PillX.Medicine.DosageTimes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -298,7 +295,7 @@ public class UserController {
         return "Failure";
     }
 
-    @RequestMapping(value = "/user/medicine/getAllOnDate")
+    @GetMapping(value = "/user/medicine/getAllOnDate")
     public Map<UserMedicine, List<PillReminder>> getAllOnDate(@RequestParam String email, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate onDate) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
@@ -307,7 +304,7 @@ public class UserController {
         return new TreeMap<>();
     }
 
-    @RequestMapping(value = "/user/medicine/getAllBetweenDates")
+    @GetMapping(value = "/user/medicine/getAllBetweenDates")
     public Map<UserMedicine, List<PillReminder>> getAllBetweenDates(@RequestParam String email, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         User user = userRepository.findByEmail(email);
