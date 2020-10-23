@@ -21,8 +21,7 @@ public class DosageTimes {
 
     public boolean[] weekdays = new boolean[7];
 
-    public List<PillReminder> pillDateTimes = new ArrayList<>();
-    //public List<LocalDateTime> pillDateTimesDone = new ArrayList<>();
+    public List<PillReminder> pillDateTime = new ArrayList<>();
 
     public DosageTimes(boolean intervalUsage, LocalDate startDate, LocalDate endDate, LocalTime time, Intervals intervalType, int interval, boolean[] weekdays) {
         this.intervalUsage = intervalUsage;
@@ -64,7 +63,7 @@ public class DosageTimes {
         }
         LocalDateTime thisLoopTime = startDate.atTime(time);
         while (thisLoopTime.isBefore(endDate.atTime(time))) {
-            pillDateTimes.add(new PillReminder(thisLoopTime));
+            pillDateTime.add(new PillReminder(thisLoopTime));
             thisLoopTime = thisLoopTime.plus(temporalInterval);
         }
     }
@@ -78,7 +77,7 @@ public class DosageTimes {
                     if (!currentLoopDate.isBefore(endDate)) {
                         return;
                     }
-                    pillDateTimes.add(new PillReminder(currentLoopDate.atTime(time)));
+                    pillDateTime.add(new PillReminder(currentLoopDate.atTime(time)));
                 }
             }
         }

@@ -1,6 +1,5 @@
 package Rever.PillX.User;
 
-import Rever.PillX.Medicine.Medicine;
 import Rever.PillX.Medicine.PillReminder;
 import Rever.PillX.Medicine.UserMedicine;
 import org.springframework.data.annotation.Id;
@@ -66,8 +65,8 @@ public class User {
         for (UserMedicine medicine : medicines) {
             int j = 0;
             List<PillReminder> times = new ArrayList<>();
-            while (j < medicine.dosageSetting.pillDateTimes.size() && medicine.dosageSetting.pillDateTimes.get(j).time.toLocalDate().equals(date)) {
-                times.add(medicine.dosageSetting.pillDateTimes.get(j++));
+            while (j < medicine.dosageSetting.pillDateTime.size() && medicine.dosageSetting.pillDateTime.get(j).time.toLocalDate().equals(date)) {
+                times.add(medicine.dosageSetting.pillDateTime.get(j++));
             }
             medicinesOnDate.put(medicine, times);
         }
@@ -79,11 +78,11 @@ public class User {
         for (UserMedicine medicine : medicines) {
             int j = 0;
             List<PillReminder> times = new ArrayList<>();
-            while (j < medicine.dosageSetting.pillDateTimes.size() && ((medicine.dosageSetting.pillDateTimes.get(j).time.toLocalDate().isAfter(startDate) ||
-                    medicine.dosageSetting.pillDateTimes.get(j).time.toLocalDate().isEqual(startDate)) &&
-                    (medicine.dosageSetting.pillDateTimes.get(j).time.toLocalDate().isBefore(endDate) ||
-                            medicine.dosageSetting.pillDateTimes.get(j).time.toLocalDate().isEqual(endDate)))) {
-                times.add(medicine.dosageSetting.pillDateTimes.get(j));
+            while (j < medicine.dosageSetting.pillDateTime.size() && ((medicine.dosageSetting.pillDateTime.get(j).time.toLocalDate().isAfter(startDate) ||
+                    medicine.dosageSetting.pillDateTime.get(j).time.toLocalDate().isEqual(startDate)) &&
+                    (medicine.dosageSetting.pillDateTime.get(j).time.toLocalDate().isBefore(endDate) ||
+                            medicine.dosageSetting.pillDateTime.get(j).time.toLocalDate().isEqual(endDate)))) {
+                times.add(medicine.dosageSetting.pillDateTime.get(j));
                 j++;
             }
             medicinesOnDate.put(medicine, times);
@@ -92,9 +91,9 @@ public class User {
     }
 
     public String TakePill(UserMedicine medicine, LocalDateTime taken) {
-        for (int i = 0; i < medicine.dosageSetting.pillDateTimes.size(); i++) {
-            if (medicine.dosageSetting.pillDateTimes.get(i).time.equals(taken)) {
-                medicine.dosageSetting.pillDateTimes.get(i).take();
+        for (int i = 0; i < medicine.dosageSetting.pillDateTime.size(); i++) {
+            if (medicine.dosageSetting.pillDateTime.get(i).time.equals(taken)) {
+                medicine.dosageSetting.pillDateTime.get(i).take();
                 return "Success";
             }
         }
@@ -102,9 +101,9 @@ public class User {
     }
 
     public String unTakePill(UserMedicine medicine, LocalDateTime untaken) {
-        for (int i = 0; i < medicine.dosageSetting.pillDateTimes.size(); i++) {
-            if (medicine.dosageSetting.pillDateTimes.get(i).time.equals(untaken)) {
-                medicine.dosageSetting.pillDateTimes.get(i).untake();
+        for (int i = 0; i < medicine.dosageSetting.pillDateTime.size(); i++) {
+            if (medicine.dosageSetting.pillDateTime.get(i).time.equals(untaken)) {
+                medicine.dosageSetting.pillDateTime.get(i).untake();
                 return "Success";
             }
         }
