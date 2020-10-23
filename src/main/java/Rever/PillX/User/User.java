@@ -44,7 +44,7 @@ public class User {
 
     public void deleteMedicineByidentifier(String identifier) {
         for (int i = 0; i < medicines.size(); i++) {
-            if (medicines.get(i).identifier.equals(identifier)) {
+            if (medicines.get(i).identifier != null && medicines.get(i).identifier.equals(identifier)) {
                 medicines.remove(i);
                 break;
             }
@@ -53,7 +53,7 @@ public class User {
 
     public UserMedicine findMedicineByidentifier(String identifier) {
         for (UserMedicine medicine : medicines) {
-            if (medicine.identifier.equals(identifier)) {
+            if (medicine.identifier != null && medicine.identifier.equals(identifier)) {
                 return medicine;
             }
         }
