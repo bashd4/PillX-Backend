@@ -85,15 +85,4 @@ public class FileUploadController {
         fos.close();
         return convFile;
     }
-
-    @JsonAutoDetect
-    private class ReturnInfo {
-        public String identifier;
-        public String name;
-
-        public ReturnInfo(String identifier, String name) {
-            this.identifier = identifier;
-            this.name = name;
-        }
-    }
 }

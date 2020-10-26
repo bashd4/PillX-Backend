@@ -2,6 +2,7 @@ package Rever.PillX.User;
 
 import Rever.PillX.Medicine.*;
 import Rever.PillX.Medicine.DosageTimes;
+import Rever.PillX.Scanning.ReturnInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -190,6 +191,22 @@ public class UserController {
             return "Failure, medicine or user did not exist";
         }
         return medicine.identifier;
+    }
+
+    @RequestMapping(value = "user/medicine/search/barcode")
+    public List<ReturnInfo> searchMedicineByBarcode(@RequestParam String email, @RequestParam String barcode) {
+        List<Medicine> medicineList = medicineRepository.findAll();
+        List<ReturnInfo> results = new ArrayList<>();
+        for (Medicine medicine : medicineList) {
+            if (medicine.barcode.equals(barcode) || medicine.barcode.contains(barcode)) {
+                results.add(new ReturnInfo(medicine.identifier, medicine.name));
+            }
+        }
+        if (results.size() == 0) {
+            Medicine defaultMedicine = medicineRepository.findByidentifier("97801"); //Default medicine is panadol
+            results.add(new ReturnInfo(defaultMedicine.identifier, defaultMedicine.name));
+        }
+        return results;
     }
 
     @RequestMapping(value = "user/medicine/add/json") //NOTE: Requires identifier to be an existing medicine in the "Medicine" database
