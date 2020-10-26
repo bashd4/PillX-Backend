@@ -2,7 +2,7 @@ package Rever.PillX.User;
 
 import Rever.PillX.Medicine.*;
 import Rever.PillX.Medicine.DosageTimes;
-import Rever.PillX.Scanning.ReturnInfo;
+import Rever.PillX.Scanning.MedicineReturnInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 @RestController
 public class UserController {
@@ -194,17 +193,17 @@ public class UserController {
     }
 
     @RequestMapping(value = "user/medicine/search/barcode")
-    public List<ReturnInfo> searchMedicineByBarcode(@RequestParam String email, @RequestParam String barcode) {
+    public List<MedicineReturnInfo> searchMedicineByBarcode(@RequestParam String email, @RequestParam String barcode) {
         List<Medicine> medicineList = medicineRepository.findAll();
-        List<ReturnInfo> results = new ArrayList<>();
+        List<MedicineReturnInfo> results = new ArrayList<>();
         for (Medicine medicine : medicineList) {
             if (medicine.barcode.equals(barcode) || medicine.barcode.contains(barcode)) {
-                results.add(new ReturnInfo(medicine.identifier, medicine.name));
+                results.add(new MedicineReturnInfo(medicine.identifier, medicine.name));
             }
         }
         if (results.size() == 0) {
             Medicine defaultMedicine = medicineRepository.findByidentifier("97801"); //Default medicine is panadol
-            results.add(new ReturnInfo(defaultMedicine.identifier, defaultMedicine.name));
+            results.add(new MedicineReturnInfo(defaultMedicine.identifier, defaultMedicine.name));
         }
         return results;
     }
@@ -280,7 +279,7 @@ public class UserController {
     public String addDosage(@RequestParam String email, @RequestParam String identifier,
                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime time,
+                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) List<LocalTime> time,
                             @RequestParam DosageTimes.Intervals intervalType, @RequestParam int interval) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
@@ -298,7 +297,7 @@ public class UserController {
     public String addDosage(@RequestParam String email, @RequestParam String identifier,
                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime time,
+                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) List<LocalTime> time,
                             @RequestParam boolean[] weekdays) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
@@ -313,22 +312,22 @@ public class UserController {
     }
 
     @GetMapping(value = "/user/medicine/getAllOnDate")
-    public Map<UserMedicine, List<PillReminder>> getAllOnDate(@RequestParam String email, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate onDate) {
+    public List<MedicineOnDateResponse> getAllOnDate(@RequestParam String email, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate onDate) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             return user.GetMedicineOnDate(onDate);
         }
-        return new TreeMap<>();
+        return new ArrayList<>();
     }
 
     @GetMapping(value = "/user/medicine/getAllBetweenDates")
-    public Map<UserMedicine, List<PillReminder>> getAllBetweenDates(@RequestParam String email, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+    public List<MedicineOnDateResponse> getAllBetweenDates(@RequestParam String email, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             return user.GetMedicineBetweenDates(startDate, endDate);
         }
-        return new TreeMap<>();
+        return new ArrayList<>();
     }
 
     @RequestMapping(value = "/user/medicine/takePill")

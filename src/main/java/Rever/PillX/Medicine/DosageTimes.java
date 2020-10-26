@@ -12,9 +12,9 @@ public class DosageTimes {
     public boolean intervalUsage;
     public LocalDate startDate;
     public LocalDate endDate;
-    public LocalTime time;
+    public List<LocalTime> time;
     public enum Intervals{
-        HOURS, DAYS, WEEKS, MONTHS
+        DAYS, WEEKS, MONTHS
     }
     public Intervals intervalType;
     public int interval;
@@ -23,7 +23,7 @@ public class DosageTimes {
 
     public List<PillReminder> pillDateTime = new ArrayList<>();
 
-    public DosageTimes(boolean intervalUsage, LocalDate startDate, LocalDate endDate, LocalTime time, Intervals intervalType, int interval, boolean[] weekdays) {
+    public DosageTimes(boolean intervalUsage, LocalDate startDate, LocalDate endDate, List<LocalTime> time, Intervals intervalType, int interval, boolean[] weekdays) {
         this.intervalUsage = intervalUsage;
         if (intervalUsage) {
             this.startDate = startDate;
@@ -45,9 +45,6 @@ public class DosageTimes {
     private void extrapolateDatesFromIntervals() {
         TemporalAmount temporalInterval;
         switch (intervalType) {
-            case HOURS:
-                temporalInterval = Duration.ofHours(interval);
-                break;
             case DAYS:
                 temporalInterval = Period.ofDays(interval);
                 break;
@@ -61,10 +58,12 @@ public class DosageTimes {
                 /* NOT REACHED */
                 temporalInterval = Period.ofYears(1);
         }
-        LocalDateTime thisLoopTime = startDate.atTime(time);
-        while (thisLoopTime.isBefore(endDate.atTime(time))) {
-            pillDateTime.add(new PillReminder(thisLoopTime));
-            thisLoopTime = thisLoopTime.plus(temporalInterval);
+        for (LocalTime timeOfDay: time) {
+            LocalDateTime thisLoopTime = startDate.atTime(timeOfDay);
+            while (thisLoopTime.isBefore(endDate.atTime(timeOfDay))) {
+                pillDateTime.add(new PillReminder(thisLoopTime));
+                thisLoopTime = thisLoopTime.plus(temporalInterval);
+            }
         }
     }
 
@@ -77,7 +76,9 @@ public class DosageTimes {
                     if (!currentLoopDate.isBefore(endDate)) {
                         return;
                     }
-                    pillDateTime.add(new PillReminder(currentLoopDate.atTime(time)));
+                    for (LocalTime timeOfDay : time) {
+                        pillDateTime.add(new PillReminder(currentLoopDate.atTime(timeOfDay)));
+                    }
                 }
             }
         }
