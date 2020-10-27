@@ -153,7 +153,7 @@ public class MedicineController {
     public String updateRecommendedDosage(@RequestParam String identifier, @RequestParam boolean intervalUsage,
                                           @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                           @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-                                          @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime time, @RequestParam DosageTimes.Intervals intervalType,
+                                          @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) List<LocalTime> time, @RequestParam DosageTimes.Intervals intervalType,
                                           @RequestParam int interval, @RequestParam boolean[] weekdays) {
         Medicine medicine = medicineRepository.findByidentifier(identifier);
         if (medicine != null) {

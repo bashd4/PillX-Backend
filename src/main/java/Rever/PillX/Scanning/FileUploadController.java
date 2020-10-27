@@ -2,7 +2,6 @@ package Rever.PillX.Scanning;
 
 import Rever.PillX.Medicine.Medicine;
 import Rever.PillX.Medicine.MedicineRepository;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 
 @RestController
@@ -29,7 +26,7 @@ public class FileUploadController {
     MedicineRepository medicineRepository;
 
     @RequestMapping(value = "/scanning", method = RequestMethod.POST)
-    public List<ReturnInfo> singleFileUpload(@RequestParam("file") MultipartFile file) throws IOException, TesseractException {
+    public List<MedicineReturnInfo> singleFileUpload(@RequestParam("file") MultipartFile file) throws IOException, TesseractException {
         System.err.println("GOT REQUEST\n\n\n\n\n\n\n\n");
         File convFile = convert(file);
         try {
@@ -45,15 +42,15 @@ public class FileUploadController {
             }
             System.out.println("FOUND TEXT " + text + " \n\n\n\n\n");
             List<Medicine> medicineList = medicineRepository.findAll();
-            List<ReturnInfo> results = new ArrayList<>();
+            List<MedicineReturnInfo> results = new ArrayList<>();
             for (Medicine medicine : medicineList) {
                 if (medicine.identifier.contains(text) || medicine.name.contains(text)) {
-                    results.add(new ReturnInfo(medicine.identifier, medicine.name));
+                    results.add(new MedicineReturnInfo(medicine.identifier, medicine.name));
                 }
             }
             if (results.size() == 0) {
                 Medicine defaultMedicine = medicineRepository.findByidentifier("97801"); //Default medicine is panadol
-                results.add(new ReturnInfo(defaultMedicine.identifier, defaultMedicine.name));
+                results.add(new MedicineReturnInfo(defaultMedicine.identifier, defaultMedicine.name));
             }
             return results;
         } catch (Exception ex) {
@@ -84,16 +81,5 @@ public class FileUploadController {
         fos.write(file.getBytes());
         fos.close();
         return convFile;
-    }
-
-    @JsonAutoDetect
-    private class ReturnInfo {
-        public String identifier;
-        public String name;
-
-        public ReturnInfo(String identifier, String name) {
-            this.identifier = identifier;
-            this.name = name;
-        }
     }
 }

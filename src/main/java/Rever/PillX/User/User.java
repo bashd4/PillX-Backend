@@ -60,21 +60,21 @@ public class User {
         return null;
     }
 
-    public Map<UserMedicine, List<PillReminder>> GetMedicineOnDate(LocalDate date) {
-        Map<UserMedicine, List<PillReminder>> medicinesOnDate = new TreeMap<>();
+    public List<MedicineOnDateResponse> GetMedicineOnDate(LocalDate date) {
+        List<MedicineOnDateResponse> medicinesOnDate = new ArrayList<>();
         for (UserMedicine medicine : medicines) {
             int j = 0;
             List<PillReminder> times = new ArrayList<>();
             while (j < medicine.dosageSetting.pillDateTime.size() && medicine.dosageSetting.pillDateTime.get(j).time.toLocalDate().equals(date)) {
                 times.add(medicine.dosageSetting.pillDateTime.get(j++));
             }
-            medicinesOnDate.put(medicine, times);
+            medicinesOnDate.add(new MedicineOnDateResponse(medicine, times));
         }
         return medicinesOnDate;
     }
 
-    public Map<UserMedicine, List<PillReminder>> GetMedicineBetweenDates(LocalDate startDate, LocalDate endDate) {
-        Map<UserMedicine, List<PillReminder>> medicinesOnDate = new TreeMap<>();
+    public List<MedicineOnDateResponse> GetMedicineBetweenDates(LocalDate startDate, LocalDate endDate) {
+        List<MedicineOnDateResponse> medicinesOnDate = new ArrayList<>();
         for (UserMedicine medicine : medicines) {
             int j = 0;
             List<PillReminder> times = new ArrayList<>();
@@ -85,7 +85,7 @@ public class User {
                 times.add(medicine.dosageSetting.pillDateTime.get(j));
                 j++;
             }
-            medicinesOnDate.put(medicine, times);
+            medicinesOnDate.add(new MedicineOnDateResponse(medicine, times));
         }
         return medicinesOnDate;
     }
