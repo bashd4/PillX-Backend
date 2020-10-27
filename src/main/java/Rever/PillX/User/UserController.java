@@ -165,11 +165,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "user/medicine/add") //NOTE: Requires identifier to be an existing medicine in the "Medicine" database
-    public String addMedicineToUser(@RequestParam String email, @RequestParam String identifier) {
+    public String addMedicineToUser(@RequestParam String email, @RequestParam String identifier, @RequestParam String customName) {
         Medicine medicine = medicineRepository.findByidentifier(identifier);
         User user = userRepository.findByEmail(email);
         if (medicine != null && user != null) {
             UserMedicine userMedicine = new UserMedicine(medicine);
+            userMedicine.customName = customName;
             user.medicines.add(userMedicine);
             userRepository.save(user);
         } else {
