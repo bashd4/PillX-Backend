@@ -198,7 +198,7 @@ public class UserController {
         List<Medicine> medicineList = medicineRepository.findAll();
         List<MedicineReturnInfo> results = new ArrayList<>();
         for (Medicine medicine : medicineList) {
-            if (medicine.barcode.equals(barcode) || medicine.barcode.contains(barcode)) {
+            if (medicine.barcode != null && (medicine.barcode.equals(barcode) || medicine.barcode.contains(barcode))) {
                 results.add(new MedicineReturnInfo(medicine.identifier, medicine.name));
             }
         }
