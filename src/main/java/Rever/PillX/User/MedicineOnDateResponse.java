@@ -6,8 +6,8 @@ import Rever.PillX.Medicine.UserMedicine;
 import java.util.List;
 
 public class MedicineOnDateResponse {
-    UserMedicine medicine;
-    List<PillReminder> times;
+    public UserMedicine medicine;
+    public List<PillReminder> times;
 
     public MedicineOnDateResponse() {}
 
