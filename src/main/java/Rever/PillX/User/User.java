@@ -63,10 +63,11 @@ public class User {
     public List<MedicineOnDateResponse> GetMedicineOnDate(LocalDate date) {
         List<MedicineOnDateResponse> medicinesOnDate = new ArrayList<>();
         for (UserMedicine medicine : medicines) {
-            int j = 0;
             List<PillReminder> times = new ArrayList<>();
-            while (j < medicine.dosageSetting.pillDateTime.size() && medicine.dosageSetting.pillDateTime.get(j).time.toLocalDate().isEqual(date)) {
-                times.add(medicine.dosageSetting.pillDateTime.get(j++));
+            for (PillReminder pillTime : medicine.dosageSetting.pillDateTime) {
+                if (pillTime.time.toLocalDate().isEqual(date)) {
+                    times.add(pillTime);
+                }
             }
             if (times.size() > 0) {
                 medicinesOnDate.add(new MedicineOnDateResponse(medicine, times));
@@ -78,14 +79,13 @@ public class User {
     public List<MedicineOnDateResponse> GetMedicineBetweenDates(LocalDate startDate, LocalDate endDate) {
         List<MedicineOnDateResponse> medicinesOnDate = new ArrayList<>();
         for (UserMedicine medicine : medicines) {
-            int j = 0;
             List<PillReminder> times = new ArrayList<>();
-            while (j < medicine.dosageSetting.pillDateTime.size() && ((medicine.dosageSetting.pillDateTime.get(j).time.toLocalDate().isAfter(startDate) ||
-                    medicine.dosageSetting.pillDateTime.get(j).time.toLocalDate().isEqual(startDate)) &&
-                    (medicine.dosageSetting.pillDateTime.get(j).time.toLocalDate().isBefore(endDate) ||
-                            medicine.dosageSetting.pillDateTime.get(j).time.toLocalDate().isEqual(endDate)))) {
-                times.add(medicine.dosageSetting.pillDateTime.get(j));
-                j++;
+            for (PillReminder pillTime : medicine.dosageSetting.pillDateTime) {
+                if ((pillTime.time.toLocalDate().isAfter(startDate) || pillTime.time.toLocalDate().isEqual(startDate)) &&
+                        (pillTime.time.toLocalDate().isBefore(endDate) ||
+                                pillTime.time.toLocalDate().isEqual(endDate))) {
+                    times.add(pillTime);
+                }
             }
             if (times.size() > 0) {
                 medicinesOnDate.add(new MedicineOnDateResponse(medicine, times));
