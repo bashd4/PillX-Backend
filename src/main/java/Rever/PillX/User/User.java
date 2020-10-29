@@ -65,7 +65,7 @@ public class User {
         for (UserMedicine medicine : medicines) {
             int j = 0;
             List<PillReminder> times = new ArrayList<>();
-            while (j < medicine.dosageSetting.pillDateTime.size() && medicine.dosageSetting.pillDateTime.get(j).time.toLocalDate().equals(date)) {
+            while (j < medicine.dosageSetting.pillDateTime.size() && medicine.dosageSetting.pillDateTime.get(j).time.toLocalDate().isEqual(date)) {
                 times.add(medicine.dosageSetting.pillDateTime.get(j++));
             }
             if (times.size() > 0) {
