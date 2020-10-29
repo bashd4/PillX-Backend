@@ -68,7 +68,9 @@ public class User {
             while (j < medicine.dosageSetting.pillDateTime.size() && medicine.dosageSetting.pillDateTime.get(j).time.toLocalDate().equals(date)) {
                 times.add(medicine.dosageSetting.pillDateTime.get(j++));
             }
-            medicinesOnDate.add(new MedicineOnDateResponse(medicine, times));
+            if (times.size() > 0) {
+                medicinesOnDate.add(new MedicineOnDateResponse(medicine, times));
+            }
         }
         return medicinesOnDate;
     }
@@ -85,7 +87,9 @@ public class User {
                 times.add(medicine.dosageSetting.pillDateTime.get(j));
                 j++;
             }
-            medicinesOnDate.add(new MedicineOnDateResponse(medicine, times));
+            if (times.size() > 0) {
+                medicinesOnDate.add(new MedicineOnDateResponse(medicine, times));
+            }
         }
         return medicinesOnDate;
     }
