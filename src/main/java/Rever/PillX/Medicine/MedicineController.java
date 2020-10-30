@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Endpoint controller for medicines
+ */
 @RestController
 public class MedicineController {
 
@@ -45,7 +47,6 @@ public class MedicineController {
     @RequestMapping(value = "/medicine/remove")
     public String removeMedicine(@RequestParam String identifier) {
         medicineRepository.deleteById(identifier);
-
         return String.format("Deleted medicine %s", identifier);
     }
 

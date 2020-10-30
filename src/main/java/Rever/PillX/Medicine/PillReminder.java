@@ -2,13 +2,14 @@ package Rever.PillX.Medicine;
 
 import java.time.LocalDateTime;
 
+/*
+ * A class that represents a reminder for a pill to be taken, includes time and taken state
+ */
 public class PillReminder {
     public LocalDateTime time;
     public boolean taken;
 
-    public PillReminder() {
-
-    }
+    public PillReminder() { }
 
     public PillReminder(LocalDateTime time) {
         this.time = time;

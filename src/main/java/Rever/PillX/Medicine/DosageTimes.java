@@ -6,9 +6,12 @@ import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Dosage times for a medicine, includes construction fields as well as list of times for frontend usage
+ */
 public class DosageTimes {
 
-
+    //region Pill Date & Time construction fields
     public boolean intervalUsage;
     public LocalDate startDate;
     public LocalDate endDate;
@@ -20,9 +23,11 @@ public class DosageTimes {
     public int interval;
 
     public boolean[] weekdays = new boolean[7];
+    //endregion
 
     public List<PillReminder> pillDateTime = new ArrayList<>();
 
+    //If intervalUsage == true, use intervalType and interval. If false, use weekdays.
     public DosageTimes(boolean intervalUsage, LocalDate startDate, LocalDate endDate, List<LocalTime> time, Intervals intervalType, int interval, boolean[] weekdays) {
         this.intervalUsage = intervalUsage;
         if (intervalUsage) {

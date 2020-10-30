@@ -1,8 +1,10 @@
 package Rever.PillX.Medicine;
 
-
 import java.util.List;
 
+/*
+ * Represents a generic medicine
+ */
 public abstract class AbsMedicine {
 
     public enum ActionSites {
@@ -24,7 +26,7 @@ public abstract class AbsMedicine {
 
     public DosageTimes recommendedDosage;
     public List<String> ingredients;
-    public List<String> drugInteractions; // Do these need to be medicines?
+    public List<String> drugInteractions;
 
     public AbsMedicine() {}
 

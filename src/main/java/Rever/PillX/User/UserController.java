@@ -2,7 +2,7 @@ package Rever.PillX.User;
 
 import Rever.PillX.Medicine.*;
 import Rever.PillX.Medicine.DosageTimes;
-import Rever.PillX.Scanning.MedicineReturnInfo;
+import Rever.PillX.Medicine.MedicineReturnInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/*
+ * Endpoints to do with users
+ */
 @RestController
 public class UserController {
 
@@ -23,6 +26,7 @@ public class UserController {
     @Autowired
     MedicineRepository medicineRepository;
 
+    //region User creation/deletion
     @RequestMapping(value = "/user/add")
     public String addUser(@RequestParam String email, @RequestParam(required=false) String fullName,  @RequestParam String password,
                           @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfBirth, @RequestParam(required=false) User.Gender gender,
@@ -63,6 +67,7 @@ public class UserController {
     public void deleteUser(@RequestParam String email) {
         userRepository.deleteById(email);
     }
+    //endregion
 
     //region Update User fields
     @RequestMapping(value = "user/fullName/update")

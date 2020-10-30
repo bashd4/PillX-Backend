@@ -5,6 +5,9 @@ import Rever.PillX.Medicine.UserMedicine;
 
 import java.util.List;
 
+/*
+ * HTTP Response object including medicine and times
+ */
 public class MedicineOnDateResponse {
     public UserMedicine medicine;
     public List<PillReminder> times;

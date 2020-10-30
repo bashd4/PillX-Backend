@@ -2,6 +2,7 @@ package Rever.PillX.Scanning;
 
 import Rever.PillX.Medicine.Medicine;
 import Rever.PillX.Medicine.MedicineRepository;
+import Rever.PillX.Medicine.MedicineReturnInfo;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +19,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/*
+ * Endpoint for uploading files and scanning
+ */
 @RestController
 public class FileUploadController {
 
     @Autowired
     MedicineRepository medicineRepository;
 
+    /*
+     * Handles a image upload, scans the image, then returns a list of possible medicines
+     */
     @RequestMapping(value = "/scanning", method = RequestMethod.POST)
     public List<MedicineReturnInfo> singleFileUpload(@RequestParam("file") MultipartFile file) throws IOException, TesseractException {
-        System.err.println("GOT REQUEST\n\n\n\n\n\n\n\n");
         File convFile = convert(file);
         try {
             if (convFile == null) {
@@ -40,7 +45,6 @@ public class FileUploadController {
             if (!convFile.delete()) {
                 System.out.println("Failed delete");
             }
-            System.out.println("FOUND TEXT " + text + " \n\n\n\n\n");
             List<Medicine> medicineList = medicineRepository.findAll();
             List<MedicineReturnInfo> results = new ArrayList<>();
             for (Medicine medicine : medicineList) {
@@ -61,6 +65,9 @@ public class FileUploadController {
         }
     }
 
+    /*
+     * Converts a MultipartFile into an appropriate file format for Tesseract
+     */
     public static File convert(MultipartFile file) throws IOException {
         if (file.getOriginalFilename() == null) {
             System.out.println("No original Filename");
