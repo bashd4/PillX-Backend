@@ -21,6 +21,7 @@ public class PillReminder {
         this.taken = taken;
     }
 
+    // Include Getters for jackson object conversion
     public boolean getTaken() {
         return taken;
     }

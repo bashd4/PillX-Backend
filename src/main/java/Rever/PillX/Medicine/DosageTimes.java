@@ -27,7 +27,9 @@ public class DosageTimes {
 
     public List<PillReminder> pillDateTime = new ArrayList<>();
 
-    //If intervalUsage == true, use intervalType and interval. If false, use weekdays.
+    /*
+     * Construct a DosageTimes object, if intervalUsage == true, use intervalType and interval. If false, use weekdays.
+     */
     public DosageTimes(boolean intervalUsage, LocalDate startDate, LocalDate endDate, List<LocalTime> time, Intervals intervalType, int interval, boolean[] weekdays) {
         this.intervalUsage = intervalUsage;
         if (intervalUsage) {

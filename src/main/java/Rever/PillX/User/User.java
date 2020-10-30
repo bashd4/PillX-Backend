@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/*
+ * A User.
+ */
 public class User {
 
     public enum Gender {
@@ -21,10 +23,10 @@ public class User {
     public String email;
 
     public String fullName;
-    public String password; //TODO: Implement this securely after core functionality is done
+    public String password;
     public LocalDate dateOfBirth;
     public Gender gender = Gender.UNKNOWN;
-    public List<String> allergies = new ArrayList<>(); //Not sure what type this should be, string for now
+    public List<String> allergies = new ArrayList<>();
     public List<UserMedicine> medicines = new ArrayList<>();
 
     public User() {}
@@ -58,6 +60,9 @@ public class User {
         return null;
     }
 
+    /*
+     * Get a list of medicines with reminders to be taken on date
+     */
     public List<MedicineOnDateResponse> GetMedicineOnDate(LocalDate date) {
         List<MedicineOnDateResponse> medicinesOnDate = new ArrayList<>();
         for (UserMedicine medicine : medicines) {
@@ -74,6 +79,9 @@ public class User {
         return medicinesOnDate;
     }
 
+    /*
+     * Get a list of medicines with reminders to be taken between startDate and endDate
+     */
     public List<MedicineOnDateResponse> GetMedicineBetweenDates(LocalDate startDate, LocalDate endDate) {
         List<MedicineOnDateResponse> medicinesOnDate = new ArrayList<>();
         for (UserMedicine medicine : medicines) {
@@ -92,20 +100,26 @@ public class User {
         return medicinesOnDate;
     }
 
+    /*
+     * Take a pill at time
+     */
     public String TakePill(UserMedicine medicine, LocalDateTime taken) {
-        for (int i = 0; i < medicine.dosageSetting.pillDateTime.size(); i++) {
-            if (medicine.dosageSetting.pillDateTime.get(i).time.equals(taken)) {
-                medicine.dosageSetting.pillDateTime.get(i).take();
+        for (PillReminder pillReminder : medicine.dosageSetting.pillDateTime) {
+            if (pillReminder.time.equals(taken)) {
+                pillReminder.take();
                 return "Success";
             }
         }
         return "Failure";
     }
 
+    /*
+     * Untake a pill at time
+     */
     public String unTakePill(UserMedicine medicine, LocalDateTime untaken) {
-        for (int i = 0; i < medicine.dosageSetting.pillDateTime.size(); i++) {
-            if (medicine.dosageSetting.pillDateTime.get(i).time.equals(untaken)) {
-                medicine.dosageSetting.pillDateTime.get(i).untake();
+        for (PillReminder pillReminder : medicine.dosageSetting.pillDateTime) {
+            if (pillReminder.time.equals(untaken)) {
+                pillReminder.untake();
                 return "Success";
             }
         }
